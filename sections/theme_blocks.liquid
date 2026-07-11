@@ -1,0 +1,46 @@
+<div class="{% if section.settings.full_width == false%} page-width{% endif %}">
+  {% content_for 'blocks' %}
+</div>
+
+{% schema %}
+{
+  "name": "Theme-blocks section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Create a custom section with theme blocks"
+    },
+    {
+      "type": "checkbox",
+      "id": "full_width",
+      "label": "Use screen's full width",
+      "default": false,
+      "info": "Theme settings uses 1300px as max width for content"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "@theme"
+    },
+    {
+      "type": "@app"
+    },
+    {
+      "type": "blk_richtext"
+    },
+    {
+      "type": "blk_flex-row"
+    },
+    {
+      "type": "blk_flex-col"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Theme-blocks section",
+      "category": "Layout",
+      "blocks": []
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,92 @@
+{% liquid
+  assign image = block.settings.image
+  assign image_mobile = block.settings.image_mobile | default: image
+  assign marker = block.id | handle | prepend: 'bg-'
+%}
+{% if image %}
+  <style id="{{ marker }}" {{ block.shopify_attributes }}>
+    .flex-row:has(> #{{ marker }}),
+    .flex-col:has(> #{{ marker }}) {
+      background-image: {% if block.settings.overlay != blank %}linear-gradient({{ block.settings.overlay }}, {{ block.settings.overlay }}), {% endif %}url('{{ image | image_url: width: 2000 }}');
+      background-size: cover;
+      background-position: {{ block.settings.position }};
+      background-repeat: no-repeat;
+      {%- if block.settings.fixed %}
+      background-attachment: fixed;
+      {%- endif %}
+    }
+
+    @media screen and (max-width: 749px) {
+      .flex-row:has(> #{{ marker }}),
+      .flex-col:has(> #{{ marker }}) {
+        background-image: {% if block.settings.overlay != blank %}linear-gradient({{ block.settings.overlay }}, {{ block.settings.overlay }}), {% endif %}url('{{ image_mobile | image_url: width: 1000 }}');
+      }
+    }
+  </style>
+{% elsif request.design_mode %}
+  <style id="{{ marker }}" {{ block.shopify_attributes }}>
+    .flex-row:has(> #{{ marker }}),
+    .flex-col:has(> #{{ marker }}) {
+      outline: 2px dashed rgba(0, 0, 0, 0.25);
+      outline-offset: -2px;
+    }
+  </style>
+{% endif %}
+
+{% schema %}
+{
+  "name": "Background image",
+  "tag": null,
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Image",
+      "info": "Covers the whole parent block, keeping its original aspect ratio. Parts of the image may be cropped"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_mobile",
+      "label": "Image (mobile)",
+      "info": "Leave empty to use the same image as desktop"
+    },
+    {
+      "type": "select",
+      "id": "position",
+      "label": "Image position",
+      "options": [
+        { "value": "left top", "label": "Top left" },
+        { "value": "center top", "label": "Top center" },
+        { "value": "right top", "label": "Top right" },
+        { "value": "left center", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "right center", "label": "Right" },
+        { "value": "left bottom", "label": "Bottom left" },
+        { "value": "center bottom", "label": "Bottom center" },
+        { "value": "right bottom", "label": "Bottom right" }
+      ],
+      "default": "center",
+      "info": "Which part of the image stays visible when it gets cropped"
+    },
+    {
+      "type": "color_background",
+      "id": "overlay",
+      "label": "Overlay",
+      "info": "A tint over the image, useful to keep text readable. Use the alpha channel to control its strength"
+    },
+    {
+      "type": "checkbox",
+      "id": "fixed",
+      "label": "Fixed while scrolling",
+      "default": false,
+      "info": "The image stays in place as the page scrolls. Not supported on most mobile devices"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Background image",
+      "category": "Custom blocks"
+    }
+  ]
+}
+{% endschema %}

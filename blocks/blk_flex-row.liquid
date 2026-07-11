@@ -1,0 +1,454 @@
+{% liquid
+  assign bg = block.settings.bg_color | default: 'transparent'
+  assign bg_mobile = block.settings.bg_color_mobile | default: bg
+
+  assign custom_width = block.settings.custom_width | strip
+  assign width_check = custom_width | plus: 0 | append: ''
+  if width_check == custom_width and custom_width != blank
+    assign custom_width = custom_width | append: '%'
+  endif
+  assign custom_width = custom_width | escape
+  if custom_width == blank
+    assign custom_width = 'auto'
+  endif
+
+  assign width_mobile = block.settings.width_mobile
+  if width_mobile == 'default'
+    assign width_mobile = block.settings.width
+    assign custom_width_mobile = custom_width
+  else
+    assign custom_width_mobile = block.settings.custom_width_mobile | strip
+    assign width_check = custom_width_mobile | plus: 0 | append: ''
+    if width_check == custom_width_mobile and custom_width_mobile != blank
+      assign custom_width_mobile = custom_width_mobile | append: '%'
+    endif
+    assign custom_width_mobile = custom_width_mobile | escape
+    if custom_width_mobile == blank
+      assign custom_width_mobile = custom_width
+    endif
+  endif
+
+  case block.settings.horizontal_alignment
+    when 'left'
+      assign justify = 'flex-start'
+    when 'center'
+      assign justify = 'center'
+    when 'right'
+      assign justify = 'flex-end'
+    else
+      assign justify = 'space-between'
+  endcase
+
+  case block.settings.vertical_alignment
+    when 'top'
+      assign align = 'flex-start'
+    when 'middle'
+      assign align = 'center'
+    when 'bottom'
+      assign align = 'flex-end'
+    else
+      assign align = 'stretch'
+  endcase
+
+  if block.settings.stack_mobile
+    case block.settings.horizontal_alignment_mobile
+      when 'left'
+        assign align_mobile = 'flex-start'
+      when 'center'
+        assign align_mobile = 'center'
+      when 'right'
+        assign align_mobile = 'flex-end'
+      else
+        assign align_mobile = 'stretch'
+    endcase
+    case block.settings.vertical_alignment_mobile
+      when 'middle'
+        assign justify_mobile = 'center'
+      when 'bottom'
+        assign justify_mobile = 'flex-end'
+      when 'space_between'
+        assign justify_mobile = 'space-between'
+      else
+        assign justify_mobile = 'flex-start'
+    endcase
+  else
+    case block.settings.horizontal_alignment_mobile
+      when 'left'
+        assign justify_mobile = 'flex-start'
+      when 'center'
+        assign justify_mobile = 'center'
+      when 'right'
+        assign justify_mobile = 'flex-end'
+      else
+        assign justify_mobile = 'space-between'
+    endcase
+    case block.settings.vertical_alignment_mobile
+      when 'top'
+        assign align_mobile = 'flex-start'
+      when 'middle'
+        assign align_mobile = 'center'
+      when 'bottom'
+        assign align_mobile = 'flex-end'
+      else
+        assign align_mobile = 'stretch'
+    endcase
+  endif
+%}
+{% style %}
+  #shopify-block-{{ block.id }} {
+    --bg: {{ bg }};
+    --gap: {{ block.settings.gap }}px;
+    --justify: {{ justify }};
+    --align: {{ align }};
+    --pad-top: {{ block.settings.padding_top }}px;
+    --pad-right: {{ block.settings.padding_right }}px;
+    --pad-bottom: {{ block.settings.padding_bottom }}px;
+    --pad-left: {{ block.settings.padding_left }}px;
+    --radius: {{ block.settings.corner_radius }}px;
+    --min-h: {% if block.settings.min_height > 0 %}{{ block.settings.min_height }}px{% else %}auto{% endif %};
+    --bg-m: {{ bg_mobile }};
+    --gap-m: {{ block.settings.gap_mobile }}px;
+    --justify-m: {{ justify_mobile }};
+    --align-m: {{ align_mobile }};
+    --pad-top-m: {{ block.settings.padding_top_mobile }}px;
+    --pad-right-m: {{ block.settings.padding_right_mobile }}px;
+    --pad-bottom-m: {{ block.settings.padding_bottom_mobile }}px;
+    --pad-left-m: {{ block.settings.padding_left_mobile }}px;
+    {%- if block.settings.width == 'custom' %}
+    --w: {{ custom_width }};
+    {%- endif %}
+    {%- if width_mobile == 'custom' %}
+    --w-m: {{ custom_width_mobile }};
+    {%- endif %}
+  }
+{% endstyle %}
+<div
+  class="flex-row flex-row--d-{{ block.settings.width }} flex-row--m-{{ width_mobile }}{% if block.settings.wrap %} flex-row--wrap{% endif %}{% if block.settings.stack_mobile %} flex-row--stack{% endif %}"
+  {{ block.shopify_attributes }}
+>
+  {% content_for 'blocks' %}
+</div>
+
+{% stylesheet %}
+  .flex-row {
+    display: flex;
+    flex-direction: row;
+    background-color: var(--bg);
+    gap: var(--gap);
+    justify-content: var(--justify);
+    align-items: var(--align);
+    padding: var(--pad-top) var(--pad-right) var(--pad-bottom) var(--pad-left);
+    border-radius: var(--radius);
+    min-height: var(--min-h, auto);
+  }
+
+  .flex-row--wrap {
+    flex-wrap: wrap;
+  }
+
+  @media screen and (min-width: 750px) {
+    .flex-row--d-fill {
+      flex-grow: 1;
+      flex-basis: 0;
+      min-width: 0;
+    }
+
+    .flex-row--d-custom {
+      width: var(--w);
+    }
+  }
+
+  @media screen and (max-width: 749px) {
+    .flex-row--m-fill {
+      flex-grow: 1;
+      flex-basis: 0;
+      min-width: 0;
+    }
+
+    .flex-row--m-custom {
+      width: var(--w-m);
+    }
+
+    .flex-row {
+      background-color: var(--bg-m);
+      gap: var(--gap-m);
+      justify-content: var(--justify-m);
+      align-items: var(--align-m);
+      padding: var(--pad-top-m) var(--pad-right-m) var(--pad-bottom-m) var(--pad-left-m);
+    }
+
+    .flex-row--stack {
+      flex-direction: column;
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Flex row",
+  "settings": [
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Background color"
+    },
+    {
+      "type": "color",
+      "id": "bg_color_mobile",
+      "label": "Background color (mobile)",
+      "info": "Leave empty to use the same background color as desktop"
+    },
+    {
+      "type": "header",
+      "content": "Desktop settings"
+    },
+    {
+      "type": "range",
+      "id": "gap",
+      "label": "Gap between items",
+      "min": 0,
+      "max": 100,
+      "step": 2,
+      "unit": "px",
+      "default": 20
+    },
+    {
+      "type": "select",
+      "id": "horizontal_alignment",
+      "label": "Horizontal alignment",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "right", "label": "Right" },
+        { "value": "space_between", "label": "Space between" }
+      ],
+      "default": "left"
+    },
+    {
+      "type": "select",
+      "id": "vertical_alignment",
+      "label": "Vertical alignment",
+      "options": [
+        { "value": "top", "label": "Top" },
+        { "value": "middle", "label": "Middle" },
+        { "value": "bottom", "label": "Bottom" },
+        { "value": "stretch", "label": "Stretch" }
+      ],
+      "default": "stretch"
+    },
+    {
+      "type": "checkbox",
+      "id": "wrap",
+      "label": "Allow items to wrap",
+      "default": false,
+      "info": "Items move to a new line when they don't fit"
+    },
+    {
+      "type": "select",
+      "id": "width",
+      "label": "Width",
+      "options": [
+        { "value": "fill", "label": "Fill available space" },
+        { "value": "fit", "label": "Fit content" },
+        { "value": "custom", "label": "Custom" }
+      ],
+      "default": "fill",
+      "info": "How this row shares space when placed inside another row or column"
+    },
+    {
+      "type": "text",
+      "id": "custom_width",
+      "label": "Custom width",
+      "default": "100%",
+      "info": "Any CSS size: 50%, 300px, 40vw, calc(100% - 40px). Plain numbers are treated as %",
+      "visible_if": "{{ block.settings.width == 'custom' }}"
+    },
+    {
+      "type": "range",
+      "id": "min_height",
+      "label": "Minimum height",
+      "min": 0,
+      "max": 800,
+      "step": 20,
+      "unit": "px",
+      "default": 0,
+      "info": "0 means automatic"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Padding top",
+      "min": 0,
+      "max": 100,
+      "step": 2,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Padding bottom",
+      "min": 0,
+      "max": 100,
+      "step": 2,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding_left",
+      "label": "Padding left",
+      "min": 0,
+      "max": 100,
+      "step": 2,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding_right",
+      "label": "Padding right",
+      "min": 0,
+      "max": 100,
+      "step": 2,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "corner_radius",
+      "label": "Corner radius",
+      "min": 0,
+      "max": 50,
+      "step": 2,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "header",
+      "content": "Mobile settings"
+    },
+    {
+      "type": "checkbox",
+      "id": "stack_mobile",
+      "label": "Stack vertically on mobile",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "gap_mobile",
+      "label": "Gap between items",
+      "min": 0,
+      "max": 100,
+      "step": 2,
+      "unit": "px",
+      "default": 20
+    },
+    {
+      "type": "select",
+      "id": "horizontal_alignment_mobile",
+      "label": "Horizontal alignment",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "right", "label": "Right" },
+        { "value": "space_between", "label": "Space between" }
+      ],
+      "default": "left",
+      "info": "When stacked, 'Space between' behaves as 'Stretch'"
+    },
+    {
+      "type": "select",
+      "id": "vertical_alignment_mobile",
+      "label": "Vertical alignment",
+      "options": [
+        { "value": "top", "label": "Top" },
+        { "value": "middle", "label": "Middle" },
+        { "value": "bottom", "label": "Bottom" },
+        { "value": "space_between", "label": "Space between" }
+      ],
+      "default": "top",
+      "info": "When not stacked, 'Space between' behaves as 'Stretch'"
+    },
+    {
+      "type": "select",
+      "id": "width_mobile",
+      "label": "Width",
+      "options": [
+        { "value": "default", "label": "Same as desktop" },
+        { "value": "fill", "label": "Fill available space" },
+        { "value": "fit", "label": "Fit content" },
+        { "value": "custom", "label": "Custom" }
+      ],
+      "default": "default"
+    },
+    {
+      "type": "text",
+      "id": "custom_width_mobile",
+      "label": "Custom width",
+      "info": "Any CSS size: 50%, 300px, 40vw, calc(100% - 40px). Plain numbers are treated as %. Leave empty to use the desktop custom width",
+      "visible_if": "{{ block.settings.width_mobile == 'custom' }}"
+    },
+    {
+      "type": "range",
+      "id": "padding_top_mobile",
+      "label": "Padding top",
+      "min": 0,
+      "max": 100,
+      "step": 2,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_mobile",
+      "label": "Padding bottom",
+      "min": 0,
+      "max": 100,
+      "step": 2,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding_left_mobile",
+      "label": "Padding left",
+      "min": 0,
+      "max": 100,
+      "step": 2,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding_right_mobile",
+      "label": "Padding right",
+      "min": 0,
+      "max": 100,
+      "step": 2,
+      "unit": "px",
+      "default": 0
+    }
+  ],
+  "blocks": [
+    {
+      "type": "@theme"
+    },
+    {
+      "type": "@app"
+    },
+    {
+      "type": "blk_richtext"
+    },
+    {
+      "type": "blk_background-image"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Flex row",
+      "category": "Layout"
+    }
+  ]
+}
+{% endschema %}

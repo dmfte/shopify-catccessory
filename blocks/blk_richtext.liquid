@@ -1,0 +1,71 @@
+{% style %}
+  #shopify-block-{{ block.id }} {
+    {% if block.settings.full_width %}
+        width: 100%;
+        text-align: {{ block.settings.alignment }};
+    {% endif %}
+  }
+{% endstyle %}
+{{
+  block.settings.richtext
+  | replace: '::', '<br>'
+  | replace: 'u^', '<u>'
+  | replace: 'u%', '</u>'
+  | replace: 's^', '<sup>'
+  | replace: 's$', '</sup>'
+  | replace: 'b^', '<sub>'
+  | replace: 'b$', '</sub>'
+}}
+{% schema %}
+{
+  "name": "Richtext block",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Richtext"
+    },
+    {
+      "type": "richtext",
+      "id": "richtext",
+      "label": "Text",
+      "default": "<p>Default text</p>",
+      "info": "Use :: to force a breakline, u^..u$ to underline, s^..s$ for superscript, b^..b$ for underscript"
+    },
+    {
+      "type": "checkbox",
+      "id": "full_width",
+      "label": "Full width",
+      "default": true,
+      "info": "When off, its alignment will depend on the parent's settings"
+    },
+    {
+      "type": "select",
+      "id": "alignment",
+      "label": "Text alignment",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ],
+      "default": "left",
+      "info": "Only effective when 'Full width' is on",
+      "visible_if": "{{ block.settings.full_width }}"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Richtext block",
+      "category": "Custom blocks"
+    }
+  ]
+}
+{% endschema %}
