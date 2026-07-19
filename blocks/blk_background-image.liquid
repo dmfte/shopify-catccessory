@@ -24,7 +24,7 @@
 {% elsif request.design_mode %}
   <style id="{{ marker }}" {{ block.shopify_attributes }}>
     :has(> #{{ marker }}) {
-      outline: 2px dashed rgba(0, 0, 0, 0.25);
+      outline: 2px dashed rgb(var(--color-foreground-rgb) / 0.25);
       outline-offset: -2px;
     }
   </style>

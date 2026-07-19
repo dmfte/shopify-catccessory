@@ -1,6 +1,8 @@
 {% liquid
-  assign bg = block.settings.bg_color | default: 'transparent'
-  assign bg_mobile = block.settings.bg_color_mobile | default: bg
+  assign inherit_color_scheme = block.settings.inherit_color_scheme
+  if inherit_color_scheme == false
+    assign scheme = block.settings.color_scheme
+  endif
 
   assign custom_width = block.settings.custom_width | strip
   assign width_check = custom_width | plus: 0 | append: ''
@@ -126,7 +128,10 @@
   #shopify-block-{{ block.id }} {
     display: {{ display_desktop }};
     flex-direction: column;
-    background-color: {{ bg }};
+    {%- if inherit_color_scheme == false and scheme %}
+    {% render 'blk-scheme-vars', scheme: scheme %}
+    background-color: var(--color-background);
+    {%- endif %}
     gap: {{ block.settings.gap }}px;
     justify-content: {{ justify }};
     align-items: {{ align }};
@@ -147,7 +152,6 @@
   @media screen and (max-width: 749px) {
     #shopify-block-{{ block.id }} {
       display: {{ display_mobile }};
-      background-color: {{ bg_mobile }};
       gap: {{ block.settings.gap_mobile }}px;
       justify-content: {{ justify_mobile }};
       align-items: {{ align_mobile }};
@@ -171,15 +175,21 @@
   "name": "Flex column",
   "settings": [
     {
-      "type": "color",
-      "id": "bg_color",
-      "label": "Background color"
+      "type": "header",
+      "content": "t:content.appearance"
     },
     {
-      "type": "color",
-      "id": "bg_color_mobile",
-      "label": "Background color (mobile)",
-      "info": "Leave empty to use the same background color as desktop"
+      "type": "checkbox",
+      "id": "inherit_color_scheme",
+      "label": "t:settings.inherit_color_scheme",
+      "default": true
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "t:settings.color_scheme",
+      "default": "scheme-1",
+      "visible_if": "{{ block.settings.inherit_color_scheme == false }}"
     },
     {
       "type": "header",

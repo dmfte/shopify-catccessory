@@ -9,7 +9,7 @@
     display: flex;
     flex-direction: column;
     align-items: stretch;
-    rule: {{ block.settings.thickness }}px {{ block.settings.style }} {{ block.settings.color }};
+    rule: {{ block.settings.thickness }}px {{ block.settings.style }} {{ block.settings.color | default: 'var(--color-border)' }};
 
     & .empty {
       min-height: 0px;
@@ -38,7 +38,7 @@
       "type": "color",
       "id": "color",
       "label": "Color",
-      "default": "#777777"
+      "info": "Leave empty to use the theme's border color"
     },
     {
       "type": "range",
