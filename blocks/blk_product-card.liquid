@@ -1,0 +1,581 @@
+{% liquid
+  assign product = block.settings.product
+
+  assign card_title = block.settings.title_override | strip
+  if card_title == blank
+    assign card_title = product.title
+  endif
+
+  if block.settings.image_override != blank
+    assign card_image = block.settings.image_override
+  else
+    assign card_image = product.featured_image
+  endif
+
+  assign compare_at = product.compare_at_price | default: 0
+  assign show_compare = false
+  if block.settings.show_compare_at and compare_at > product.price
+    assign show_compare = true
+  endif
+
+  assign variant = product.selected_or_first_available_variant | default: product.variants.first
+
+  assign clickable = block.settings.clickable
+%}
+{% style %}
+  #shopify-block-{{ block.id }} {
+    display: flex;
+    flex-direction: column;
+    gap: {{ block.settings.gap }}px;
+    width: 100%;
+    flex: 1 1 0%;
+    min-width: 0;
+  }
+{% endstyle %}
+{%- capture image_html -%}
+  {%- if card_image -%}
+    {{
+      card_image
+      | image_url: width: 1600
+      | image_tag:
+        widths: '240, 480, 720, 960, 1200, 1600',
+        sizes: 'auto, (min-width: 750px) 33vw, 100vw',
+        alt: card_title,
+        loading: 'lazy',
+        class: 'pcard-image'
+    }}
+  {%- elsif request.design_mode -%}
+    <div class="pcard-image-placeholder">Product image</div>
+  {%- endif -%}
+{%- endcapture -%}
+{%- capture title_html -%}
+  {%- if card_title != blank -%}
+    <h4 class="pcard-title">{{ card_title | escape }}</h4>
+  {%- endif -%}
+{%- endcapture -%}
+{%- capture description_html -%}
+  {%- assign short_description = product.metafields.custom.short_description.value -%}
+  {%- if block.settings.description_override != blank -%}
+    <div class="pcard-description">{{ block.settings.description_override }}</div>
+  {%- elsif block.settings.use_short_description and short_description != blank -%}
+    <div class="pcard-description">{{ short_description | escape | newline_to_br }}</div>
+  {%- elsif product.description != blank -%}
+    <div class="pcard-description">{{ product.description }}</div>
+  {%- endif -%}
+{%- endcapture -%}
+{%- capture price_html -%}
+  {%- if product != blank -%}
+    <div class="pcard-price-row">
+      {%- if show_compare -%}
+        <s class="pcard-compare">{{ compare_at | money }}</s>
+      {%- endif -%}
+      <span class="pcard-price">{{ product.price | money }}</span>
+      {%- if block.settings.show_discount_pill and block.settings.discount_pill_text != blank -%}
+        <span class="pcard-pill">{{ block.settings.discount_pill_text | escape }}</span>
+      {%- endif -%}
+    </div>
+  {%- endif -%}
+{%- endcapture -%}
+{%- capture ordered_html -%}
+  {%- for i in (1..4) -%}
+    {%- assign pos = i | append: '' -%}
+    {%- if block.settings.order_image == pos %}{{ image_html }}{% endif -%}
+    {%- if block.settings.order_title == pos %}{{ title_html }}{% endif -%}
+    {%- if block.settings.order_description == pos %}{{ description_html }}{% endif -%}
+    {%- if block.settings.order_price == pos %}{{ price_html }}{% endif -%}
+  {%- endfor -%}
+{%- endcapture -%}
+{%- capture shop_now_html -%}
+  {%- if block.settings.show_shop_now -%}
+    {%- assign shop_now_label = block.settings.shop_now_label | default: 'SHOP NOW' -%}
+    {%- assign cat_classes = 'pcard-cat-btn pcard-cat-btn--animated' -%}
+    {%- if block.settings.shop_now_full_width -%}
+      {%- assign cat_classes = cat_classes | append: ' pcard-cat-btn--full' -%}
+    {%- endif -%}
+    {%- if clickable and product != blank -%}
+      <span class="{{ cat_classes }}"><span class="pcard-cat-shape">{{ shop_now_label | escape }}</span></span>
+    {%- else -%}
+      <a class="{{ cat_classes }}" href="{{ product.url | default: '#' }}"><span class="pcard-cat-shape">{{ shop_now_label | escape }}</span></a>
+    {%- endif -%}
+  {%- endif -%}
+{%- endcapture -%}
+{% if product == blank and request.design_mode %}
+  <div class="pcard-empty-hint" {{ block.shopify_attributes }}>Select a product</div>
+{% endif %}
+{% if clickable and product != blank %}
+  <a class="pcard-main" href="{{ product.url }}" {{ block.shopify_attributes }}>
+    {{ ordered_html }}
+    {{ shop_now_html }}
+  </a>
+{% else %}
+  <div
+    class="pcard-main"
+    {% unless product == blank and request.design_mode %}
+      {{- block.shopify_attributes -}}
+    {% endunless %}
+  >
+    {{ ordered_html }}
+    {{ shop_now_html }}
+  </div>
+{% endif %}
+{% if block.settings.show_atc and product != blank %}
+  {% form 'product', product, class: 'pcard-atc-form' %}
+    <input type="hidden" name="id" value="{{ variant.id }}">
+    <div class="pcard-qty">
+      <button type="button" class="pcard-qty-btn" data-pcard-qty="minus" aria-label="Decrease quantity">&minus;</button>
+      <input
+        class="pcard-qty-input"
+        type="number"
+        name="quantity"
+        value="1"
+        min="1"
+        inputmode="numeric"
+        aria-label="Quantity"
+      >
+      <button type="button" class="pcard-qty-btn" data-pcard-qty="plus" aria-label="Increase quantity">+</button>
+    </div>
+    {% if variant.available %}
+      <button type="submit" class="pcard-atc-btn">ADD TO CART</button>
+    {% else %}
+      <button type="submit" class="pcard-atc-btn" disabled>SOLD OUT</button>
+    {% endif %}
+  {% endform %}
+{% endif %}
+
+{% stylesheet %}
+  .pcard-main {
+    display: flex;
+    flex-direction: column;
+    gap: inherit;
+    width: 100%;
+    min-width: 0;
+    color: inherit;
+    text-decoration: none;
+    overflow-wrap: anywhere;
+    height: 100%;
+  }
+
+  .pcard-main > * {
+    margin: 0;
+    min-width: 0;
+  }
+
+  .pcard-image {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
+  .pcard-image-placeholder,
+  .pcard-empty-hint {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 150px;
+    outline: 2px dashed rgba(0, 0, 0, 0.25);
+    outline-offset: -2px;
+    color: rgba(0, 0, 0, 0.5);
+  }
+
+  .pcard-description > p:first-child {
+    margin-top: 0;
+  }
+
+  .pcard-description > p:last-child {
+    margin-bottom: 0;
+  }
+
+  .pcard-price-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .pcard-compare {
+    opacity: 0.6;
+  }
+
+  .pcard-pill {
+    background-color: #add8e6;
+    color: #222222;
+    border-radius: 999px;
+    padding: 2px 10px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+
+  /* SHOP NOW: hardcoded cat-button shape (see blk_button-cat), 190x50 native 117.8x35 */
+  .pcard-cat-btn {
+    display: block;
+    position: relative;
+    width: 190px;
+    max-width: 100%;
+    height: 50px;
+    margin: 0 auto 0 0;
+    text-decoration: none;
+    cursor: pointer;
+  }
+
+  .pcard-cat-shape {
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    width: 117.8px;
+    height: 35px;
+    transform-origin: top left;
+    transform: scale(calc(190 / 117.8), calc(50 / 35));
+    background-color: #add8e6;
+    box-sizing: border-box;
+    padding-bottom: 6px;
+    padding-right: 15px;
+    font-size: 12px;
+    line-height: 1;
+    color: #222222;
+    transition: background-color 150ms ease;
+    clip-path: var(
+      --pcard-rest,
+      path(
+        'M 25 10 C 25 7 24 5 22 3 L 19 6 H 14 L 11 3 C 8 7 5 12 5 16 C 5 20 7 24 8 26 H 17 H 8 C 3 26 2 26 2 28 C 2 30 3 30 6 30 H 17 H 7 C 5 30 3 30 3 32 C 3 35 5 35 6 35 h 84.8 c 4 0 6 -1 8 -3 c 2 -2 3 -5 2 -8 c 3 -4 4 -7 3 -12 c -2 -5 -3 -6 -9 -9 c -3 -1 -5 -2 -7 0 c -2 4 3 5 3 5 c 5 1 5 1 8 3 c 2 2 2 5 1 6 c 0 -2 -2 -4 -3 -5 c -2 -2 -5 -2 -9 -2 z m -19 3 l -3 -1 m 2 3 l -2 0 z'
+      )
+    );
+  }
+
+  /* Full width: the body path is extended by JS so the cat never deforms;
+     its x-scale is constant (150/93), so the native shape is always 62% of the button */
+  .pcard-cat-btn--full {
+    width: 100%;
+  }
+
+  .pcard-cat-btn--full .pcard-cat-shape {
+    width: calc(100% * 93 / 150);
+  }
+
+  .pcard-cat-btn:hover .pcard-cat-shape,
+  .pcard-cat-btn:focus-visible .pcard-cat-shape,
+  .pcard-main:hover .pcard-cat-shape {
+    background-color: #8fc7dc;
+  }
+
+  .pcard-cat-btn--animated:hover .pcard-cat-shape,
+  .pcard-main:hover .pcard-cat-btn--animated .pcard-cat-shape {
+    animation: pcard-cat-tail 500ms;
+  }
+
+  @keyframes pcard-cat-tail {
+    0%,
+    100% {
+      clip-path: var(
+        --pcard-rest,
+        path(
+          'M 25 10 C 25 7 24 5 22 3 L 19 6 H 14 L 11 3 C 8 7 5 12 5 16 C 5 20 7 24 8 26 H 17 H 8 C 3 26 2 26 2 28 C 2 30 3 30 6 30 H 17 H 7 C 5 30 3 30 3 32 C 3 35 5 35 6 35 h 84.8 c 4 0 6 -1 8 -3 c 2 -2 3 -5 2 -8 c 3 -4 4 -7 3 -12 c -2 -5 -3 -6 -9 -9 c -3 -1 -5 -2 -7 0 c -2 4 3 5 3 5 c 5 1 5 1 8 3 c 2 2 2 5 1 6 c 0 -2 -2 -4 -3 -5 c -2 -2 -5 -2 -9 -2 z m -19 3 l -3 -1 m 2 3 l -2 0 z'
+        )
+      );
+    }
+    50% {
+      clip-path: var(
+        --pcard-wag,
+        path(
+          'M 25 10 C 25 7 24 5 22 3 L 19 6 H 14 L 11 3 C 8 7 5 12 5 16 C 5 20 7 24 8 26 H 17 H 8 C 3 26 2 26 2 28 C 2 30 3 30 6 30 H 17 H 7 C 5 30 3 30 3 32 C 3 35 5 35 6 35 h 84.8 c 4 0 6 -1 8 -3 c 2 -2 3 -5 2 -8 c 3 -4 5 -8 11 -12 c 3 -3 7 -7 6 -9 c -1 -2 -3 -2 -5 0 c -2 2 -2 2 -4 4 c -2 2 -1 1 -4 5 c -3 4 -4 4 -5 5 c 0 -2 -2 -4 -3 -5 c -2 -2 -5 -2 -9 -2 z m -19 3 l -3 -1 m 2 3 l -2 0 z'
+        )
+      );
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .pcard-cat-btn--animated:hover .pcard-cat-shape,
+    .pcard-main:hover .pcard-cat-btn--animated .pcard-cat-shape {
+      animation: none;
+    }
+  }
+
+  .pcard-atc-form {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: stretch;
+    gap: 8px;
+    width: 100%;
+    min-width: 0;
+  }
+
+  .pcard-qty {
+    display: flex;
+    align-items: stretch;
+    border: 1px solid #cccccc;
+  }
+
+  .pcard-qty-btn {
+    width: 34px;
+    border: none;
+    background: none;
+    font-size: 16px;
+    line-height: 1;
+    color: #222222;
+    cursor: pointer;
+  }
+
+  .pcard-qty-btn:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+  }
+
+  .pcard-qty-input {
+    width: 44px;
+    border: none;
+    text-align: center;
+    font-size: 14px;
+    -moz-appearance: textfield;
+    appearance: textfield;
+  }
+
+  .pcard-qty-input::-webkit-outer-spin-button,
+  .pcard-qty-input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+
+  .pcard-atc-btn {
+    flex: 1 1 auto;
+    min-height: 44px;
+    border: none;
+    background-color: #add8e6;
+    color: #222222;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    cursor: pointer;
+    transition: background-color 150ms ease;
+  }
+
+  .pcard-atc-btn:hover:not([disabled]) {
+    background-color: #8fc7dc;
+  }
+
+  .pcard-atc-btn[disabled] {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+{% endstylesheet %}
+
+{% javascript %}
+  (function () {
+    var PREFIX =
+      'M 25 10 C 25 7 24 5 22 3 L 19 6 H 14 L 11 3 C 8 7 5 12 5 16 C 5 20 7 24 8 26 H 17 H 8 C 3 26 2 26 2 28 C 2 30 3 30 6 30 H 17 H 7 C 5 30 3 30 3 32 C 3 35 5 35 6 35 h ';
+    var REST_SUFFIX =
+      ' c 4 0 6 -1 8 -3 c 2 -2 3 -5 2 -8 c 3 -4 4 -7 3 -12 c -2 -5 -3 -6 -9 -9 c -3 -1 -5 -2 -7 0 c -2 4 3 5 3 5 c 5 1 5 1 8 3 c 2 2 2 5 1 6 c 0 -2 -2 -4 -3 -5 c -2 -2 -5 -2 -9 -2 z m -19 3 l -3 -1 m 2 3 l -2 0 z';
+    var WAG_SUFFIX =
+      ' c 4 0 6 -1 8 -3 c 2 -2 3 -5 2 -8 c 3 -4 5 -8 11 -12 c 3 -3 7 -7 6 -9 c -1 -2 -3 -2 -5 0 c -2 2 -2 2 -4 4 c -2 2 -1 1 -4 5 c -3 4 -4 4 -5 5 c 0 -2 -2 -4 -3 -5 c -2 -2 -5 -2 -9 -2 z m -19 3 l -3 -1 m 2 3 l -2 0 z';
+
+    function updateShape(shape) {
+      // The body's h segment absorbs all extra width (hbody = native width - 33),
+      // so the cat's proportions never change
+      var hbody = Math.max(0, Math.round((shape.offsetWidth - 33) * 100) / 100);
+      shape.style.setProperty('--pcard-rest', "path('" + PREFIX + hbody + REST_SUFFIX + "')");
+      shape.style.setProperty('--pcard-wag', "path('" + PREFIX + hbody + WAG_SUFFIX + "')");
+    }
+
+    var observer = new ResizeObserver(function (entries) {
+      entries.forEach(function (entry) {
+        updateShape(entry.target);
+      });
+    });
+
+    function init(root) {
+      root.querySelectorAll('.pcard-cat-btn--full .pcard-cat-shape').forEach(function (shape) {
+        observer.observe(shape);
+      });
+    }
+
+    init(document);
+    document.addEventListener('shopify:section:load', function (event) {
+      init(event.target);
+    });
+  })();
+
+  document.addEventListener('click', function (event) {
+    var button = event.target.closest('[data-pcard-qty]');
+    if (!button) return;
+    var input = button.parentElement.querySelector('input[name="quantity"]');
+    if (!input) return;
+    var value = parseInt(input.value, 10) || 1;
+    value = button.dataset.pcardQty === 'plus' ? value + 1 : value - 1;
+    input.value = Math.max(1, value);
+  });
+{% endjavascript %}
+
+{% schema %}
+{
+  "name": "Product card",
+  "settings": [
+    {
+      "type": "product",
+      "id": "product",
+      "label": "Product"
+    },
+    {
+      "type": "header",
+      "content": "Element order",
+      "info": "If two elements share a position, they render in the default order"
+    },
+    {
+      "type": "select",
+      "id": "order_image",
+      "label": "Image position",
+      "options": [
+        { "value": "1", "label": "1" },
+        { "value": "2", "label": "2" },
+        { "value": "3", "label": "3" },
+        { "value": "4", "label": "4" }
+      ],
+      "default": "1"
+    },
+    {
+      "type": "select",
+      "id": "order_title",
+      "label": "Title position",
+      "options": [
+        { "value": "1", "label": "1" },
+        { "value": "2", "label": "2" },
+        { "value": "3", "label": "3" },
+        { "value": "4", "label": "4" }
+      ],
+      "default": "2"
+    },
+    {
+      "type": "select",
+      "id": "order_description",
+      "label": "Description position",
+      "options": [
+        { "value": "1", "label": "1" },
+        { "value": "2", "label": "2" },
+        { "value": "3", "label": "3" },
+        { "value": "4", "label": "4" }
+      ],
+      "default": "3"
+    },
+    {
+      "type": "select",
+      "id": "order_price",
+      "label": "Price position",
+      "options": [
+        { "value": "1", "label": "1" },
+        { "value": "2", "label": "2" },
+        { "value": "3", "label": "3" },
+        { "value": "4", "label": "4" }
+      ],
+      "default": "4"
+    },
+    {
+      "type": "header",
+      "content": "Overrides",
+      "info": "Leave empty to use the product's own data"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_override",
+      "label": "Image"
+    },
+    {
+      "type": "text",
+      "id": "title_override",
+      "label": "Title"
+    },
+    {
+      "type": "richtext",
+      "id": "description_override",
+      "label": "Description"
+    },
+    {
+      "type": "checkbox",
+      "id": "use_short_description",
+      "label": "Use short description metafield",
+      "default": true,
+      "info": "Uses custom.short_description; falls back to the product description when empty"
+    },
+    {
+      "type": "header",
+      "content": "Price"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_compare_at",
+      "label": "Show strikethrough price",
+      "default": true,
+      "info": "Uses the product's compare-at price. Hidden when it isn't higher than the price"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_discount_pill",
+      "label": "Show discount pill",
+      "default": false
+    },
+    {
+      "type": "text",
+      "id": "discount_pill_text",
+      "label": "Discount pill text",
+      "default": "SALE",
+      "visible_if": "{{ block.settings.show_discount_pill }}"
+    },
+    {
+      "type": "header",
+      "content": "Card"
+    },
+    {
+      "type": "range",
+      "id": "gap",
+      "label": "Gap between elements",
+      "min": 0,
+      "max": 60,
+      "step": 2,
+      "unit": "px",
+      "default": 8
+    },
+    {
+      "type": "checkbox",
+      "id": "clickable",
+      "label": "Make the whole card clickable",
+      "default": false,
+      "info": "Links the card to the product page"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_shop_now",
+      "label": "Show SHOP NOW button",
+      "default": false
+    },
+    {
+      "type": "text",
+      "id": "shop_now_label",
+      "label": "SHOP NOW label",
+      "default": "SHOP NOW",
+      "visible_if": "{{ block.settings.show_shop_now }}"
+    },
+    {
+      "type": "checkbox",
+      "id": "shop_now_full_width",
+      "label": "Full-width SHOP NOW button",
+      "default": false,
+      "info": "The cat stretches its body to fill the card, keeping its proportions",
+      "visible_if": "{{ block.settings.show_shop_now }}"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_atc",
+      "label": "Show ADD TO CART with quantity",
+      "default": false,
+      "info": "Always placed at the end of the card"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Product card",
+      "category": "Custom blocks"
+    }
+  ]
+}
+{% endschema %}

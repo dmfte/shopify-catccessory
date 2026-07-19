@@ -1,32 +1,76 @@
 {% liquid
   case block.settings.alignment
     when 'left'
-      assign cat_margin = block.settings.margin_vertical | append: 'px auto ' | append: block.settings.margin_vertical | append: 'px 0'
+      assign cat_margin = '0 auto 0 0'
     when 'right'
-      assign cat_margin = block.settings.margin_vertical | append: 'px 0 ' | append: block.settings.margin_vertical | append: 'px auto'
+      assign cat_margin = '0 0 0 auto'
     else
-      assign cat_margin = block.settings.margin_vertical | append: 'px auto'
+      assign cat_margin = '0 auto'
   endcase
+
+  # Extra body length so the cat keeps its default-width (150px) proportions:
+  # the x-scale (width / nw) stays constant at 150/93 for every width.
+  # Only the body's 'h' segment stretches; everything after it is relative,
+  # so the tail and closing curves shift right without deforming.
+  assign ext = block.settings.width | minus: 150 | times: 93 | divided_by: 150.0 | round: 2
+  assign nw = 93 | plus: ext
+  assign hbody = 60 | plus: ext
 %}
+{%- capture rest_path -%}
+  M 25 10 C 25 7 24 5 22 3 L 19 6 H 14 L 11 3 C 8 7 5 12 5 16 C 5 20 7 24 8 26 H 17 H 8 C 3 26 2 26 2 28 C 2 30 3 30 6 30 H 17 H 7 C 5 30 3 30 3 32 C 3 35 5 35 6 35 h {{ hbody }} c 4 0 6 -1 8 -3 c 2 -2 3 -5 2 -8 c 3 -4 4 -7 3 -12 c -2 -5 -3 -6 -9 -9 c -3 -1 -5 -2 -7 0 c -2 4 3 5 3 5 c 5 1 5 1 8 3 c 2 2 2 5 1 6 c 0 -2 -2 -4 -3 -5 c -2 -2 -5 -2 -9 -2 z m -19 3 l -3 -1 m 2 3 l -2 0 z
+{%- endcapture -%}
+{%- capture wag_path -%}
+  M 25 10 C 25 7 24 5 22 3 L 19 6 H 14 L 11 3 C 8 7 5 12 5 16 C 5 20 7 24 8 26 H 17 H 8 C 3 26 2 26 2 28 C 2 30 3 30 6 30 H 17 H 7 C 5 30 3 30 3 32 C 3 35 5 35 6 35 h {{ hbody }} c 4 0 6 -1 8 -3 c 2 -2 3 -5 2 -8 c 3 -4 5 -8 11 -12 c 3 -3 7 -7 6 -9 c -1 -2 -3 -2 -5 0 c -2 2 -2 2 -4 4 c -2 2 -1 1 -4 5 c -3 4 -4 4 -5 5 c 0 -2 -2 -4 -3 -5 c -2 -2 -5 -2 -9 -2 z m -19 3 l -3 -1 m 2 3 l -2 0 z
+{%- endcapture -%}
 {% style %}
   #shopify-block-{{ block.id }} {
     --w: {{ block.settings.width }};
     --h: {{ block.settings.height }};
+    --nw: {{ nw }};
+    --cat-anim: cat-tail-{{ block.id }};
+    --cat-anim-svg: cat-tail-svg-{{ block.id }};
     --cat-margin: {{ cat_margin }};
-    --cat-bg: {{ block.settings.background_color }};
-    --cat-bg-hover: {{ block.settings.hover_background_color }};
-    --cat-text: {{ block.settings.text_color }};
     --cat-font-size: {{ block.settings.font_size }}px;
+    padding: {{ block.settings.padding_top }}px {{ block.settings.padding_right }}px {{ block.settings.padding_bottom }}px {{ block.settings.padding_left }}px;
+  }
+  @media screen and (max-width: 749px) {
+    #shopify-block-{{ block.id }} {
+      padding: {{ block.settings.padding_top_mobile }}px {{ block.settings.padding_right_mobile }}px {{ block.settings.padding_bottom_mobile }}px {{ block.settings.padding_left_mobile }}px;
+    }
+  }
+  #shopify-block-{{ block.id }} .cat-shape {
+    clip-path: path('{{ rest_path }}');
+  }
+  @keyframes cat-tail-{{ block.id }} {
+    0%, 100% {
+      clip-path: path('{{ rest_path }}');
+    }
+    50% {
+      clip-path: path('{{ wag_path }}');
+    }
+  }
+  @keyframes cat-tail-svg-{{ block.id }} {
+    0%, 100% {
+      d: path('{{ rest_path }}');
+    }
+    50% {
+      d: path('{{ wag_path }}');
+    }
   }
 {% endstyle %}
 <a
   href="{{ block.settings.link | default: '#' }}"
-  class="cat-btn{% if block.settings.animate_tail %} cat-btn--animated{% endif %}"
+  class="cat-btn color-scheme-1 cat-btn--{{ block.settings.style }}{% if block.settings.animate_tail %} cat-btn--animated{% endif %}"
   {% if block.settings.open_in_new_tab %}
     target="_blank" rel="noopener"
   {% endif %}
   {{ block.shopify_attributes }}
 >
+  {% if block.settings.style == 'outline' %}
+    <svg class="cat-outline" viewBox="0 0 {{ nw }} 35" preserveAspectRatio="none" aria-hidden="true">
+      <path d="{{ rest_path }}" vector-effect="non-scaling-stroke"></path>
+    </svg>
+  {% endif %}
   <span class="cat-shape">{{ block.settings.label | escape }}</span>
 </a>
 
@@ -47,52 +91,75 @@
     display: flex;
     align-items: flex-end;
     justify-content: center;
-    width: 121px;
+    width: calc(var(--nw) * 1px);
     height: 35px;
     transform-origin: top left;
-    transform: scale(calc(var(--w) / 121), calc(var(--h) / 35));
-    background-color: var(--cat-bg);
+    transform: scale(calc(var(--w) / var(--nw)), calc(var(--h) / 35));
+    background-color: var(--color-primary-button-background);
     box-sizing: border-box;
     padding-bottom: 6px;
+    padding-right: 15px;
     font-size: var(--cat-font-size);
     line-height: 1;
-    color: var(--cat-text);
-    transition: background-color 150ms ease;
-    clip-path: path(
-      "M 88 10 L 25 10 C 25 7 24 5 22 3 L 19 6 C 17 6 16 6 14 6 L 11 3 C 8 7 5 12 5 16 C 5 20 7 24 8 26 L 17 26 L 8 26 C 3 26 2 26 2 28 C 2 30 3 30 6 30 L 17 30 L 6 30 C 5 30 3 30 3 32 C 3 35 5 35 6 35 L 92 35 C 96 35 98 34 100 32 C 102 30 103 27 102 24 C 105 20 106 17 105 12 C 103 7 102 6 96 3 C 93 2 91 1 89 3 C 87 7 92 8 92 8 C 97 9 97 9 100 11 C 102 13 102 16 101 17 C 101 15 99 13 98 12 C 96 10 93 10 89 10 Z M 6 13 L 3 12 M 5 15 L 3 15 M 15 15 L 18 15 M 15 17 L 18 18 M 10 14 Q 11 17 12 14 Z M 11 12 A 1 1 0 0 0 9 12 A 1 1 0 0 0 11 12 M 18 12 A 1 1 0 0 0 20 12 A 1 1 0 0 0 18 12"
-    );
+    color: var(--color-primary-button-text);
+    transition: background-color 150ms ease, color 150ms ease;
   }
 
   .cat-btn:hover .cat-shape,
   .cat-btn:focus-visible .cat-shape {
-    background-color: var(--cat-bg-hover);
+    background-color: var(--color-primary-button-hover-background);
+    color: var(--color-primary-button-hover-text);
   }
 
   .cat-btn--animated:hover .cat-shape {
-    animation: cat-tail 500ms;
+    animation: var(--cat-anim) 500ms;
+  }
+
+  .cat-outline {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+    pointer-events: none;
+  }
+
+  .cat-outline path {
+    fill: var(--color-secondary-button-background);
+    stroke: var(--color-secondary-button-border);
+    stroke-width: 2px;
+    transition: fill 150ms ease, stroke 150ms ease;
+  }
+
+  .cat-btn--outline .cat-shape,
+  .cat-btn--outline:hover .cat-shape,
+  .cat-btn--outline:focus-visible .cat-shape {
+    background-color: transparent;
+  }
+
+  .cat-btn--outline .cat-shape {
+    color: var(--color-secondary-button-text);
+  }
+
+  .cat-btn--outline:hover .cat-shape,
+  .cat-btn--outline:focus-visible .cat-shape {
+    color: var(--color-secondary-button-hover-text);
+  }
+
+  .cat-btn--outline:hover .cat-outline path,
+  .cat-btn--outline:focus-visible .cat-outline path {
+    fill: var(--color-secondary-button-hover-background);
+    stroke: var(--color-secondary-button-hover-border);
+  }
+
+  .cat-btn--animated:hover .cat-outline path {
+    animation: var(--cat-anim-svg) 500ms;
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .cat-btn--animated:hover .cat-shape {
+    .cat-btn--animated:hover .cat-shape,
+    .cat-btn--animated:hover .cat-outline path {
       animation: none;
-    }
-  }
-
-  @keyframes cat-tail {
-    0% {
-      clip-path: path(
-        "M 88 10 L 25 10 C 25 7 24 5 22 3 L 19 6 C 17 6 16 6 14 6 L 11 3 C 8 7 5 12 5 16 C 5 20 7 24 8 26 L 17 26 L 8 26 C 3 26 2 26 2 28 C 2 30 3 30 6 30 L 17 30 L 6 30 C 5 30 3 30 3 32 C 3 35 5 35 6 35 L 92 35 C 96 35 98 34 100 32 C 102 30 103 27 102 24 C 105 20 106 17 105 12 C 103 7 102 6 96 3 C 93 2 91 1 89 3 C 87 7 92 8 92 8 C 97 9 97 9 100 11 C 102 13 102 16 101 17 C 101 15 99 13 98 12 C 96 10 93 10 89 10 Z M 6 13 L 3 12 M 5 15 L 3 15 M 15 15 L 18 15 M 15 17 L 18 18 M 10 14 Q 11 17 12 14 Z M 11 12 A 1 1 0 0 0 9 12 A 1 1 0 0 0 11 12 M 18 12 A 1 1 0 0 0 20 12 A 1 1 0 0 0 18 12"
-      );
-    }
-    50% {
-      clip-path: path(
-        "M 88 10 L 25 10 C 25 7 24 5 22 3 L 19 6 C 17 6 16 6 14 6 L 11 3 C 8 7 5 12 5 16 C 5 20 7 24 8 26 L 17 26 L 8 26 C 3 26 2 26 2 28 C 2 30 3 30 6 30 L 17 30 L 6 30 C 5 30 3 30 3 32 C 3 35 5 35 6 35 L 92 35 C 96 35 98 34 100 32 C 102 30 103 27 102 24 C 106 21 111 18 113 16 C 116 13 121 8 121 4 C 121 3 119 2 117 2 C 116 2 115 4 114 6 C 111 10 110 11 107 14 C 106 15 104 16 101 17 C 101 15 99 13 98 12 C 96 10 93 10 89 10 Z M 6 13 L 3 12 M 5 15 L 3 15 M 15 15 L 18 15 M 15 17 L 18 18 M 10 14 Q 11 17 12 14 Z M 11 12 A 1 1 0 0 0 9 12 A 1 1 0 0 0 11 12 M 18 12 A 1 1 0 0 0 20 12 A 1 1 0 0 0 18 12"
-      );
-    }
-    100% {
-      clip-path: path(
-        "M 88 10 L 25 10 C 25 7 24 5 22 3 L 19 6 C 17 6 16 6 14 6 L 11 3 C 8 7 5 12 5 16 C 5 20 7 24 8 26 L 17 26 L 8 26 C 3 26 2 26 2 28 C 2 30 3 30 6 30 L 17 30 L 6 30 C 5 30 3 30 3 32 C 3 35 5 35 6 35 L 92 35 C 96 35 98 34 100 32 C 102 30 103 27 102 24 C 105 20 106 17 105 12 C 103 7 102 6 96 3 C 93 2 91 1 89 3 C 87 7 92 8 92 8 C 97 9 97 9 100 11 C 102 13 102 16 101 17 C 101 15 99 13 98 12 C 96 10 93 10 89 10 Z M 6 13 L 3 12 M 5 15 L 3 15 M 15 15 L 18 15 M 15 17 L 18 18 M 10 14 Q 11 17 12 14 Z M 11 12 A 1 1 0 0 0 9 12 A 1 1 0 0 0 11 12 M 18 12 A 1 1 0 0 0 20 12 A 1 1 0 0 0 18 12"
-      );
     }
   }
 {% endstylesheet %}
@@ -130,8 +197,8 @@
       "type": "range",
       "id": "width",
       "label": "Width",
-      "min": 100,
-      "max": 400,
+      "min": 120,
+      "max": 300,
       "step": 10,
       "unit": "px",
       "default": 150
@@ -167,36 +234,113 @@
       "default": "center"
     },
     {
+      "type": "header",
+      "content": "Desktop settings"
+    },
+    {
       "type": "range",
-      "id": "margin_vertical",
-      "label": "Vertical margin",
+      "id": "padding_top",
+      "label": "Padding top",
       "min": 0,
       "max": 100,
-      "step": 5,
+      "step": 2,
       "unit": "px",
-      "default": 60
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Padding bottom",
+      "min": 0,
+      "max": 100,
+      "step": 2,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding_left",
+      "label": "Padding left",
+      "min": 0,
+      "max": 100,
+      "step": 2,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding_right",
+      "label": "Padding right",
+      "min": 0,
+      "max": 100,
+      "step": 2,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "header",
+      "content": "Mobile settings"
+    },
+    {
+      "type": "range",
+      "id": "padding_top_mobile",
+      "label": "Padding top",
+      "min": 0,
+      "max": 100,
+      "step": 2,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_mobile",
+      "label": "Padding bottom",
+      "min": 0,
+      "max": 100,
+      "step": 2,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding_left_mobile",
+      "label": "Padding left",
+      "min": 0,
+      "max": 100,
+      "step": 2,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding_right_mobile",
+      "label": "Padding right",
+      "min": 0,
+      "max": 100,
+      "step": 2,
+      "unit": "px",
+      "default": 0
     },
     {
       "type": "header",
       "content": "Style"
     },
     {
-      "type": "color",
-      "id": "background_color",
-      "label": "Background color",
-      "default": "#ADD8E6"
-    },
-    {
-      "type": "color",
-      "id": "hover_background_color",
-      "label": "Hover background color",
-      "default": "#8FC7DC"
-    },
-    {
-      "type": "color",
-      "id": "text_color",
-      "label": "Text color",
-      "default": "#222222"
+      "type": "select",
+      "id": "style",
+      "label": "Style",
+      "options": [
+        {
+          "value": "normal",
+          "label": "Normal"
+        },
+        {
+          "value": "outline",
+          "label": "Outline"
+        }
+      ],
+      "default": "normal",
+      "info": "Normal uses the theme's primary button colors, outline uses the secondary button colors"
     },
     {
       "type": "range",

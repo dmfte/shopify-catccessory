@@ -1,9 +1,65 @@
+{% liquid
+  assign full_width_mobile = block.settings.full_width
+  assign alignment_mobile = block.settings.alignment
+  if block.settings.full_width_mobile == 'on'
+    assign full_width_mobile = true
+  elsif block.settings.full_width_mobile == 'off'
+    assign full_width_mobile = false
+  endif
+  if block.settings.alignment_mobile != 'default'
+    assign alignment_mobile = block.settings.alignment_mobile
+  endif
+
+  assign font_size_tags = 'p,h1,h2,h3,h4,h5,h6' | split: ','
+%}
 {% style %}
   #shopify-block-{{ block.id }} {
     {% if block.settings.full_width %}
         width: 100%;
         text-align: {{ block.settings.alignment }};
     {% endif %}
+    padding: {{ block.settings.padding_top }}px {{ block.settings.padding_right }}px {{ block.settings.padding_bottom }}px {{ block.settings.padding_left }}px;
+  }
+  #shopify-block-{{ block.id }} > * {
+    margin: 0;
+  }
+  {% if block.settings.p_style == 'eyebrow' %}
+  #shopify-block-{{ block.id }} p {
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    font-weight: 600;
+    {% if block.settings.font_size_p == 0 %}
+    font-size: 0.75rem;
+    {% endif %}
+  }
+  {% endif %}
+  {% for tag in font_size_tags %}
+    {% assign size_key = 'font_size_' | append: tag %}
+    {% if block.settings[size_key] > 0 %}
+  #shopify-block-{{ block.id }} {{ tag }} {
+    font-size: {{ block.settings[size_key] }}px;
+  }
+    {% endif %}
+  {% endfor %}
+  @media screen and (max-width: 749px) {
+    #shopify-block-{{ block.id }} {
+      {% if full_width_mobile %}
+          width: 100%;
+          text-align: {{ alignment_mobile }};
+      {% else %}
+          width: auto;
+          text-align: inherit;
+      {% endif %}
+      padding: {{ block.settings.padding_top_mobile }}px {{ block.settings.padding_right_mobile }}px {{ block.settings.padding_bottom_mobile }}px {{ block.settings.padding_left_mobile }}px;
+    }
+    {% for tag in font_size_tags %}
+      {% assign size_key = 'font_size_' | append: tag | append: '_mobile' %}
+      {% if block.settings[size_key] > 0 %}
+    #shopify-block-{{ block.id }} {{ tag }} {
+      font-size: {{ block.settings[size_key] }}px;
+    }
+      {% endif %}
+    {% endfor %}
   }
 {% endstyle %}
 {{
@@ -11,6 +67,8 @@
   | replace: '::', '<br>'
   | replace: 'u^', '<u>'
   | replace: 'u%', '</u>'
+  | replace: '~^', '<s>'
+  | replace: '~$', '</s>'
   | replace: 's^', '<sup>'
   | replace: 's$', '</sup>'
   | replace: 'b^', '<sub>'
@@ -29,7 +87,105 @@
       "id": "richtext",
       "label": "Text",
       "default": "<p>Default text</p>",
-      "info": "Use :: to force a breakline, u^..u$ to underline, s^..s$ for superscript, b^..b$ for underscript"
+      "info": "Use :: to force a breakline, ~^..~$ to strikethrough, u^..u$ to underline, s^..s$ for superscript, b^..b$ for underscript"
+    },
+    {
+      "type": "select",
+      "id": "p_style",
+      "label": "Use <p> as:",
+      "options": [
+        {
+          "value": "paragraph",
+          "label": "Paragraph"
+        },
+        {
+          "value": "eyebrow",
+          "label": "Eyebrow text"
+        }
+      ],
+      "default": "paragraph",
+      "info": "Eyebrow text is uppercase with wide letter spacing. Override its size with the <p> font size settings below"
+    },
+    {
+      "type": "header",
+      "content": "Desktop settings"
+    },
+    {
+      "type": "range",
+      "id": "font_size_p",
+      "label": "Font size: <p>",
+      "min": 0,
+      "max": 80,
+      "step": 1,
+      "unit": "px",
+      "default": 0,
+      "info": "0 uses the theme default"
+    },
+    {
+      "type": "range",
+      "id": "font_size_h1",
+      "label": "Font size: <h1>",
+      "min": 0,
+      "max": 80,
+      "step": 1,
+      "unit": "px",
+      "default": 0,
+      "info": "0 uses the theme default"
+    },
+    {
+      "type": "range",
+      "id": "font_size_h2",
+      "label": "Font size: <h2>",
+      "min": 0,
+      "max": 80,
+      "step": 1,
+      "unit": "px",
+      "default": 0,
+      "info": "0 uses the theme default"
+    },
+    {
+      "type": "range",
+      "id": "font_size_h3",
+      "label": "Font size: <h3>",
+      "min": 0,
+      "max": 80,
+      "step": 1,
+      "unit": "px",
+      "default": 0,
+      "info": "0 uses the theme default"
+    },
+    {
+      "type": "range",
+      "id": "font_size_h4",
+      "label": "Font size: <h4>",
+      "min": 0,
+      "max": 80,
+      "step": 1,
+      "unit": "px",
+      "default": 0,
+      "info": "0 uses the theme default"
+    },
+    {
+      "type": "range",
+      "id": "font_size_h5",
+      "label": "Font size: <h5>",
+      "min": 0,
+      "max": 80,
+      "step": 1,
+      "unit": "px",
+      "default": 0,
+      "info": "0 uses the theme default"
+    },
+    {
+      "type": "range",
+      "id": "font_size_h6",
+      "label": "Font size: <h6>",
+      "min": 0,
+      "max": 80,
+      "step": 1,
+      "unit": "px",
+      "default": 0,
+      "info": "0 uses the theme default"
     },
     {
       "type": "checkbox",
@@ -59,6 +215,214 @@
       "default": "left",
       "info": "Only effective when 'Full width' is on",
       "visible_if": "{{ block.settings.full_width }}"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Padding top",
+      "min": 0,
+      "max": 100,
+      "step": 2,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Padding bottom",
+      "min": 0,
+      "max": 100,
+      "step": 2,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding_left",
+      "label": "Padding left",
+      "min": 0,
+      "max": 100,
+      "step": 2,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding_right",
+      "label": "Padding right",
+      "min": 0,
+      "max": 100,
+      "step": 2,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "header",
+      "content": "Mobile settings"
+    },
+    {
+      "type": "select",
+      "id": "full_width_mobile",
+      "label": "Full width",
+      "options": [
+        {
+          "value": "default",
+          "label": "Same as desktop"
+        },
+        {
+          "value": "on",
+          "label": "On"
+        },
+        {
+          "value": "off",
+          "label": "Off"
+        }
+      ],
+      "default": "default",
+      "info": "When off, its alignment will depend on the parent's settings"
+    },
+    {
+      "type": "select",
+      "id": "alignment_mobile",
+      "label": "Text alignment",
+      "options": [
+        {
+          "value": "default",
+          "label": "Same as desktop"
+        },
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ],
+      "default": "default",
+      "info": "Only effective when 'Full width' is on",
+      "visible_if": "{{ block.settings.full_width_mobile != 'off' }}"
+    },
+    {
+      "type": "range",
+      "id": "padding_top_mobile",
+      "label": "Padding top",
+      "min": 0,
+      "max": 100,
+      "step": 2,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_mobile",
+      "label": "Padding bottom",
+      "min": 0,
+      "max": 100,
+      "step": 2,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding_left_mobile",
+      "label": "Padding left",
+      "min": 0,
+      "max": 100,
+      "step": 2,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding_right_mobile",
+      "label": "Padding right",
+      "min": 0,
+      "max": 100,
+      "step": 2,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "font_size_p_mobile",
+      "label": "Font size: <p>",
+      "min": 0,
+      "max": 80,
+      "step": 1,
+      "unit": "px",
+      "default": 0,
+      "info": "0 uses the desktop size"
+    },
+    {
+      "type": "range",
+      "id": "font_size_h1_mobile",
+      "label": "Font size: <h1>",
+      "min": 0,
+      "max": 80,
+      "step": 1,
+      "unit": "px",
+      "default": 0,
+      "info": "0 uses the desktop size"
+    },
+    {
+      "type": "range",
+      "id": "font_size_h2_mobile",
+      "label": "Font size: <h2>",
+      "min": 0,
+      "max": 80,
+      "step": 1,
+      "unit": "px",
+      "default": 0,
+      "info": "0 uses the desktop size"
+    },
+    {
+      "type": "range",
+      "id": "font_size_h3_mobile",
+      "label": "Font size: <h3>",
+      "min": 0,
+      "max": 80,
+      "step": 1,
+      "unit": "px",
+      "default": 0,
+      "info": "0 uses the desktop size"
+    },
+    {
+      "type": "range",
+      "id": "font_size_h4_mobile",
+      "label": "Font size: <h4>",
+      "min": 0,
+      "max": 80,
+      "step": 1,
+      "unit": "px",
+      "default": 0,
+      "info": "0 uses the desktop size"
+    },
+    {
+      "type": "range",
+      "id": "font_size_h5_mobile",
+      "label": "Font size: <h5>",
+      "min": 0,
+      "max": 80,
+      "step": 1,
+      "unit": "px",
+      "default": 0,
+      "info": "0 uses the desktop size"
+    },
+    {
+      "type": "range",
+      "id": "font_size_h6_mobile",
+      "label": "Font size: <h6>",
+      "min": 0,
+      "max": 80,
+      "step": 1,
+      "unit": "px",
+      "default": 0,
+      "info": "0 uses the desktop size"
     }
   ],
   "presets": [

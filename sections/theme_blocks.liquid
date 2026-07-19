@@ -1,3 +1,16 @@
+{% stylesheet %}
+  .page-width {
+    max-width: 1400px;
+    margin: 0 auto;
+
+    @media screen and (max-width: 749px) {
+      width: 100%;
+      padding: 0 25px;
+      margin: 0;
+    }
+  }
+{% endstylesheet %}
+
 <div class="{% if section.settings.full_width == false%} page-width{% endif %}">
   {% content_for 'blocks' %}
 </div>
@@ -24,9 +37,6 @@
     },
     {
       "type": "@app"
-    },
-    {
-      "type": "blk_richtext"
     },
     {
       "type": "blk_flex-row"

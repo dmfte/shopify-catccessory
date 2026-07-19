@@ -28,6 +28,46 @@
     endif
   endif
 
+  assign max_width = block.settings.max_width | strip
+  assign width_check = max_width | plus: 0 | append: ''
+  if width_check == max_width and max_width != blank
+    assign max_width = max_width | append: '%'
+  endif
+  assign max_width = max_width | escape
+  if max_width == blank
+    assign max_width = 'none'
+  endif
+
+  assign min_width = block.settings.min_width | strip
+  assign width_check = min_width | plus: 0 | append: ''
+  if width_check == min_width and min_width != blank
+    assign min_width = min_width | append: '%'
+  endif
+  assign min_width = min_width | escape
+  if min_width == blank
+    assign min_width = '0'
+  endif
+
+  assign max_width_mobile = block.settings.max_width_mobile | strip
+  assign width_check = max_width_mobile | plus: 0 | append: ''
+  if width_check == max_width_mobile and max_width_mobile != blank
+    assign max_width_mobile = max_width_mobile | append: '%'
+  endif
+  assign max_width_mobile = max_width_mobile | escape
+  if max_width_mobile == blank
+    assign max_width_mobile = max_width
+  endif
+
+  assign min_width_mobile = block.settings.min_width_mobile | strip
+  assign width_check = min_width_mobile | plus: 0 | append: ''
+  if width_check == min_width_mobile and min_width_mobile != blank
+    assign min_width_mobile = min_width_mobile | append: '%'
+  endif
+  assign min_width_mobile = min_width_mobile | escape
+  if min_width_mobile == blank
+    assign min_width_mobile = min_width
+  endif
+
   case block.settings.horizontal_alignment
     when 'left'
       assign justify = 'flex-start'
@@ -93,95 +133,70 @@
         assign align_mobile = 'stretch'
     endcase
   endif
+
+  assign display_desktop = 'flex'
+  if block.settings.show_desktop == false
+    assign display_desktop = 'none'
+  endif
+
+  assign display_mobile = 'flex'
+  if block.settings.show_mobile == false
+    assign display_mobile = 'none'
+  endif
 %}
 {% style %}
   #shopify-block-{{ block.id }} {
-    --bg: {{ bg }};
-    --gap: {{ block.settings.gap }}px;
-    --justify: {{ justify }};
-    --align: {{ align }};
-    --pad-top: {{ block.settings.padding_top }}px;
-    --pad-right: {{ block.settings.padding_right }}px;
-    --pad-bottom: {{ block.settings.padding_bottom }}px;
-    --pad-left: {{ block.settings.padding_left }}px;
-    --radius: {{ block.settings.corner_radius }}px;
-    --min-h: {% if block.settings.min_height > 0 %}{{ block.settings.min_height }}px{% else %}auto{% endif %};
-    --bg-m: {{ bg_mobile }};
-    --gap-m: {{ block.settings.gap_mobile }}px;
-    --justify-m: {{ justify_mobile }};
-    --align-m: {{ align_mobile }};
-    --pad-top-m: {{ block.settings.padding_top_mobile }}px;
-    --pad-right-m: {{ block.settings.padding_right_mobile }}px;
-    --pad-bottom-m: {{ block.settings.padding_bottom_mobile }}px;
-    --pad-left-m: {{ block.settings.padding_left_mobile }}px;
-    {%- if block.settings.width == 'custom' %}
-    --w: {{ custom_width }};
-    {%- endif %}
-    {%- if width_mobile == 'custom' %}
-    --w-m: {{ custom_width_mobile }};
-    {%- endif %}
-  }
-{% endstyle %}
-<div
-  class="flex-row flex-row--d-{{ block.settings.width }} flex-row--m-{{ width_mobile }}{% if block.settings.wrap %} flex-row--wrap{% endif %}{% if block.settings.stack_mobile %} flex-row--stack{% endif %}"
-  {{ block.shopify_attributes }}
->
-  {% content_for 'blocks' %}
-</div>
-
-{% stylesheet %}
-  .flex-row {
-    display: flex;
+    display: {{ display_desktop }};
     flex-direction: row;
-    background-color: var(--bg);
-    gap: var(--gap);
-    justify-content: var(--justify);
-    align-items: var(--align);
-    padding: var(--pad-top) var(--pad-right) var(--pad-bottom) var(--pad-left);
-    border-radius: var(--radius);
-    min-height: var(--min-h, auto);
-  }
-
-  .flex-row--wrap {
+    background-color: {{ bg }};
+    gap: {{ block.settings.gap }}px;
+    justify-content: {{ justify }};
+    align-items: {{ align }};
+    padding: {{ block.settings.padding_top }}px {{ block.settings.padding_right }}px {{ block.settings.padding_bottom }}px {{ block.settings.padding_left }}px;
+    border-radius: {{ block.settings.corner_radius }}px;
+    min-height: {% if block.settings.min_height > 0 %}{{ block.settings.min_height }}px{% else %}auto{% endif %};
+    max-width: {{ max_width }};
+    min-width: {{ min_width }};
+    {%- if block.settings.wrap %}
     flex-wrap: wrap;
-  }
-
-  @media screen and (min-width: 750px) {
-    .flex-row--d-fill {
-      flex-grow: 1;
-      flex-basis: 0;
-      min-width: 0;
-    }
-
-    .flex-row--d-custom {
-      width: var(--w);
-    }
+    {%- endif %}
+    {%- case block.settings.width %}
+      {%- when 'fill' %}
+    flex-grow: 1;
+    flex-basis: 0;
+      {%- when 'custom' %}
+    width: {{ custom_width }};
+    {%- endcase %}
   }
 
   @media screen and (max-width: 749px) {
-    .flex-row--m-fill {
+    #shopify-block-{{ block.id }} {
+      display: {{ display_mobile }};
+      background-color: {{ bg_mobile }};
+      gap: {{ block.settings.gap_mobile }}px;
+      justify-content: {{ justify_mobile }};
+      align-items: {{ align_mobile }};
+      padding: {{ block.settings.padding_top_mobile }}px {{ block.settings.padding_right_mobile }}px {{ block.settings.padding_bottom_mobile }}px {{ block.settings.padding_left_mobile }}px;
+      max-width: {{ max_width_mobile }};
+      min-width: {{ min_width_mobile }};
+      {%- if block.settings.stack_mobile %}
+        {%- if block.settings.reverse_mobile %}
+      flex-direction: column-reverse;
+        {%- else %}
+      flex-direction: column;
+        {%- endif %}
+      {%- endif %}
+      {%- case width_mobile %}
+        {%- when 'fill' %}
       flex-grow: 1;
       flex-basis: 0;
-      min-width: 0;
-    }
-
-    .flex-row--m-custom {
-      width: var(--w-m);
-    }
-
-    .flex-row {
-      background-color: var(--bg-m);
-      gap: var(--gap-m);
-      justify-content: var(--justify-m);
-      align-items: var(--align-m);
-      padding: var(--pad-top-m) var(--pad-right-m) var(--pad-bottom-m) var(--pad-left-m);
-    }
-
-    .flex-row--stack {
-      flex-direction: column;
+        {%- when 'custom' %}
+      width: {{ custom_width_mobile }};
+      {%- endcase %}
     }
   }
-{% endstylesheet %}
+{% endstyle %}
+{% content_for 'blocks' %}
 
 {% schema %}
 {
@@ -197,6 +212,22 @@
       "id": "bg_color_mobile",
       "label": "Background color (mobile)",
       "info": "Leave empty to use the same background color as desktop"
+    },
+    {
+      "type": "header",
+      "content": "Visibility"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_desktop",
+      "label": "Show on desktop",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_mobile",
+      "label": "Show on mobile",
+      "default": true
     },
     {
       "type": "header",
@@ -264,6 +295,18 @@
       "visible_if": "{{ block.settings.width == 'custom' }}"
     },
     {
+      "type": "text",
+      "id": "max_width",
+      "label": "Max width",
+      "info": "Any CSS size: 600px, 80vw, calc(100% - 40px). Plain numbers are treated as %. Leave empty for no limit"
+    },
+    {
+      "type": "text",
+      "id": "min_width",
+      "label": "Min width",
+      "info": "Any CSS size: 200px, 20vw. Plain numbers are treated as %. Leave empty for no minimum"
+    },
+    {
       "type": "range",
       "id": "min_height",
       "label": "Minimum height",
@@ -275,43 +318,32 @@
       "info": "0 means automatic"
     },
     {
-      "type": "range",
+      "type": "header",
+      "content": "Paddings",
+      "info": "In pixels"
+    },
+    {
+      "type": "number",
       "id": "padding_top",
       "label": "Padding top",
-      "min": 0,
-      "max": 100,
-      "step": 2,
-      "unit": "px",
       "default": 0
     },
     {
-      "type": "range",
+      "type": "number",
       "id": "padding_bottom",
       "label": "Padding bottom",
-      "min": 0,
-      "max": 100,
-      "step": 2,
-      "unit": "px",
       "default": 0
     },
     {
-      "type": "range",
+      "type": "number",
       "id": "padding_left",
       "label": "Padding left",
-      "min": 0,
-      "max": 100,
-      "step": 2,
-      "unit": "px",
       "default": 0
     },
     {
-      "type": "range",
+      "type": "number",
       "id": "padding_right",
       "label": "Padding right",
-      "min": 0,
-      "max": 100,
-      "step": 2,
-      "unit": "px",
       "default": 0
     },
     {
@@ -333,6 +365,14 @@
       "id": "stack_mobile",
       "label": "Stack vertically on mobile",
       "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "reverse_mobile",
+      "label": "Reverse item order on mobile",
+      "default": false,
+      "info": "Only applies when items are stacked vertically on mobile",
+      "visible_if": "{{ block.settings.stack_mobile }}"
     },
     {
       "type": "range",
@@ -390,43 +430,44 @@
       "visible_if": "{{ block.settings.width_mobile == 'custom' }}"
     },
     {
-      "type": "range",
+      "type": "text",
+      "id": "max_width_mobile",
+      "label": "Max width",
+      "info": "Any CSS size: 600px, 80vw. Plain numbers are treated as %. Leave empty to use the same max-width as desktop"
+    },
+    {
+      "type": "text",
+      "id": "min_width_mobile",
+      "label": "Min width",
+      "info": "Any CSS size: 200px, 20vw. Plain numbers are treated as %. Leave empty to use the same min-width as desktop"
+    },
+    {
+      "type": "header",
+      "content": "Paddings",
+      "info": "In pixels"
+    },
+    {
+      "type": "number",
       "id": "padding_top_mobile",
       "label": "Padding top",
-      "min": 0,
-      "max": 100,
-      "step": 2,
-      "unit": "px",
       "default": 0
     },
     {
-      "type": "range",
+      "type": "number",
       "id": "padding_bottom_mobile",
       "label": "Padding bottom",
-      "min": 0,
-      "max": 100,
-      "step": 2,
-      "unit": "px",
       "default": 0
     },
     {
-      "type": "range",
+      "type": "number",
       "id": "padding_left_mobile",
       "label": "Padding left",
-      "min": 0,
-      "max": 100,
-      "step": 2,
-      "unit": "px",
       "default": 0
     },
     {
-      "type": "range",
+      "type": "number",
       "id": "padding_right_mobile",
       "label": "Padding right",
-      "min": 0,
-      "max": 100,
-      "step": 2,
-      "unit": "px",
       "default": 0
     }
   ],
@@ -438,10 +479,28 @@
       "type": "@app"
     },
     {
+      "type": "blk_flex-row"
+    },
+    {
+      "type": "blk_flex-col"
+    },
+    {
       "type": "blk_richtext"
     },
     {
       "type": "blk_background-image"
+    },
+    {
+      "type": "blk_button-cat"
+    },
+    {
+      "type": "blk_image"
+    },
+    {
+      "type": "blk_divider"
+    },
+    {
+      "type": "blk_product-card"
     }
   ],
   "presets": [

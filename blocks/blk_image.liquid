@@ -1,6 +1,14 @@
 {% liquid
-  assign bg = block.settings.bg_color | default: 'transparent'
-  assign bg_mobile = block.settings.bg_color_mobile | default: bg
+  assign image = block.settings.image
+  assign image_mobile = block.settings.image_mobile
+  assign alt = block.settings.alt
+  if alt == blank
+    assign alt = image.alt | default: ''
+  endif
+
+  assign widths = '240, 352, 832, 1200, 1600, 1920, 2560, 3840'
+  assign widths_list = widths | split: ', '
+  assign sizes = 'auto, (min-width: 750px) 100vw, 100vw'
 
   assign custom_width = block.settings.custom_width | strip
   assign width_check = custom_width | plus: 0 | append: ''
@@ -68,118 +76,214 @@
     assign min_width_mobile = min_width
   endif
 
-  case block.settings.horizontal_alignment
-    when 'left'
-      assign align = 'flex-start'
-    when 'center'
-      assign align = 'center'
-    when 'right'
-      assign align = 'flex-end'
-    else
-      assign align = 'stretch'
-  endcase
-
-  case block.settings.vertical_alignment
-    when 'top'
-      assign justify = 'flex-start'
-    when 'middle'
-      assign justify = 'center'
-    when 'bottom'
-      assign justify = 'flex-end'
-    else
-      assign justify = 'space-between'
-  endcase
-
-  case block.settings.horizontal_alignment_mobile
-    when 'left'
-      assign align_mobile = 'flex-start'
-    when 'center'
-      assign align_mobile = 'center'
-    when 'right'
-      assign align_mobile = 'flex-end'
-    else
-      assign align_mobile = 'stretch'
-  endcase
-
-  case block.settings.vertical_alignment_mobile
-    when 'top'
-      assign justify_mobile = 'flex-start'
-    when 'middle'
-      assign justify_mobile = 'center'
-    when 'bottom'
-      assign justify_mobile = 'flex-end'
-    else
-      assign justify_mobile = 'space-between'
-  endcase
-
-  assign display_desktop = 'flex'
+  assign display_desktop = 'block'
   if block.settings.show_desktop == false
     assign display_desktop = 'none'
   endif
 
-  assign display_mobile = 'flex'
+  assign display_mobile = 'block'
   if block.settings.show_mobile == false
     assign display_mobile = 'none'
   endif
+
+  if block.settings.prioritize
+    assign loading_value = 'eager'
+    assign fetchpriority_value = 'high'
+  else
+    assign loading_value = 'lazy'
+    assign fetchpriority_value = 'auto'
+  endif
+
+  assign show_placeholder = false
+  if image == blank and request.design_mode
+    assign show_placeholder = true
+  endif
 %}
+{% if image_mobile %}
+  {%- capture mobile_srcset -%}
+    {%- for w in widths_list -%}
+      {{ image_mobile | image_url: width: w }} {{ w }}w{% unless forloop.last %}, {% endunless %}
+    {%- endfor -%}
+  {%- endcapture -%}
+  {% assign mobile_srcset = mobile_srcset | strip %}
+{% endif %}
 {% style %}
   #shopify-block-{{ block.id }} {
     display: {{ display_desktop }};
-    flex-direction: column;
-    background-color: {{ bg }};
-    gap: {{ block.settings.gap }}px;
-    justify-content: {{ justify }};
-    align-items: {{ align }};
-    padding: {{ block.settings.padding_top }}px {{ block.settings.padding_right }}px {{ block.settings.padding_bottom }}px {{ block.settings.padding_left }}px;
-    border-radius: {{ block.settings.corner_radius }}px;
-    min-height: {% if block.settings.min_height > 0 %}{{ block.settings.min_height }}px{% else %}auto{% endif %};
     max-width: {{ max_width }};
     min-width: {{ min_width }};
+    min-height: {% if block.settings.min_height > 0 %}{{ block.settings.min_height }}px{% elsif show_placeholder %}150px{% else %}auto{% endif %};
+    padding: {{ block.settings.padding_top }}px {{ block.settings.padding_right }}px {{ block.settings.padding_bottom }}px {{ block.settings.padding_left }}px;
+    border-radius: {{ block.settings.corner_radius }}px;
+    overflow: hidden;
     {%- case block.settings.width %}
       {%- when 'fill' %}
-    flex-grow: 1;
-    flex-basis: 0;
+    width: 100%;
       {%- when 'custom' %}
     width: {{ custom_width }};
     {%- endcase %}
+    {%- if show_placeholder %}
+    outline: 2px dashed rgba(0, 0, 0, 0.25);
+    outline-offset: -2px;
+    {%- endif %}
+  }
+
+  #shopify-block-{{ block.id }} > a,
+  #shopify-block-{{ block.id }} > picture {
+    display: block;
+    width: 100%;
+    {%- if block.settings.min_height > 0 %}
+    height: 100%;
+    {%- endif %}
+  }
+
+  #shopify-block-{{ block.id }} img {
+    display: block;
+    width: 100%;
+    {%- if block.settings.min_height > 0 %}
+    height: 100%;
+    {%- endif %}
+    object-fit: {{ block.settings.object_fit }};
+    object-position: {{ block.settings.object_position }};
   }
 
   @media screen and (max-width: 749px) {
     #shopify-block-{{ block.id }} {
       display: {{ display_mobile }};
-      background-color: {{ bg_mobile }};
-      gap: {{ block.settings.gap_mobile }}px;
-      justify-content: {{ justify_mobile }};
-      align-items: {{ align_mobile }};
-      padding: {{ block.settings.padding_top_mobile }}px {{ block.settings.padding_right_mobile }}px {{ block.settings.padding_bottom_mobile }}px {{ block.settings.padding_left_mobile }}px;
       max-width: {{ max_width_mobile }};
       min-width: {{ min_width_mobile }};
+      padding: {{ block.settings.padding_top_mobile }}px {{ block.settings.padding_right_mobile }}px {{ block.settings.padding_bottom_mobile }}px {{ block.settings.padding_left_mobile }}px;
       {%- case width_mobile %}
         {%- when 'fill' %}
-      flex-grow: 1;
-      flex-basis: 0;
+      width: 100%;
         {%- when 'custom' %}
       width: {{ custom_width_mobile }};
       {%- endcase %}
     }
   }
 {% endstyle %}
-{% content_for 'blocks' %}
+{% if image %}
+  {% if block.settings.link != blank %}
+    <a
+      href="{{ block.settings.link }}"
+      {% if block.settings.open_in_new_tab %}target="_blank" rel="noopener"{% endif %}
+      {{ block.shopify_attributes }}
+    >
+      <picture>
+        {% if image_mobile %}
+          <source media="(max-width: 749px)" srcset="{{ mobile_srcset }}" sizes="{{ sizes }}">
+        {% endif %}
+        {{
+          image
+          | image_url: width: 3840
+          | image_tag:
+            width: image.width,
+            height: image.height,
+            widths: widths,
+            sizes: sizes,
+            alt: alt,
+            loading: loading_value,
+            fetchpriority: fetchpriority_value
+        }}
+      </picture>
+    </a>
+  {% else %}
+    <picture {{ block.shopify_attributes }}>
+      {% if image_mobile %}
+        <source media="(max-width: 749px)" srcset="{{ mobile_srcset }}" sizes="{{ sizes }}">
+      {% endif %}
+      {{
+        image
+        | image_url: width: 3840
+        | image_tag:
+          width: image.width,
+          height: image.height,
+          widths: widths,
+          sizes: sizes,
+          alt: alt,
+          loading: loading_value,
+          fetchpriority: fetchpriority_value
+      }}
+    </picture>
+  {% endif %}
+{% endif %}
 
 {% schema %}
 {
-  "name": "Flex column",
+  "name": "Image",
   "settings": [
     {
-      "type": "color",
-      "id": "bg_color",
-      "label": "Background color"
+      "type": "image_picker",
+      "id": "image",
+      "label": "Image"
     },
     {
-      "type": "color",
-      "id": "bg_color_mobile",
-      "label": "Background color (mobile)",
-      "info": "Leave empty to use the same background color as desktop"
+      "type": "image_picker",
+      "id": "image_mobile",
+      "label": "Image (mobile)",
+      "info": "Leave empty to use the same image as desktop. Use this for a differently cropped image on small screens"
+    },
+    {
+      "type": "text",
+      "id": "alt",
+      "label": "Alt text",
+      "info": "Leave empty to use the image's own alt text, or none if decorative"
+    },
+    {
+      "type": "header",
+      "content": "Link"
+    },
+    {
+      "type": "url",
+      "id": "link",
+      "label": "Link"
+    },
+    {
+      "type": "checkbox",
+      "id": "open_in_new_tab",
+      "label": "Open link in new tab",
+      "default": false,
+      "visible_if": "{{ block.settings.link != blank }}"
+    },
+    {
+      "type": "header",
+      "content": "Image settings"
+    },
+    {
+      "type": "select",
+      "id": "object_fit",
+      "label": "Fit",
+      "options": [
+        { "value": "cover", "label": "Cover" },
+        { "value": "contain", "label": "Contain" }
+      ],
+      "default": "cover",
+      "info": "Contain may leave empty space when a minimum height is set"
+    },
+    {
+      "type": "select",
+      "id": "object_position",
+      "label": "Image position",
+      "options": [
+        { "value": "left top", "label": "Top left" },
+        { "value": "center top", "label": "Top center" },
+        { "value": "right top", "label": "Top right" },
+        { "value": "left center", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "right center", "label": "Right" },
+        { "value": "left bottom", "label": "Bottom left" },
+        { "value": "center bottom", "label": "Bottom center" },
+        { "value": "right bottom", "label": "Bottom right" }
+      ],
+      "default": "center",
+      "info": "Which part of the image stays visible when it gets cropped"
+    },
+    {
+      "type": "checkbox",
+      "id": "prioritize",
+      "label": "Prioritize loading",
+      "default": false,
+      "info": "Turn on for images visible without scrolling, such as above-the-fold banners. Leave off for images further down the page so they load lazily"
     },
     {
       "type": "header",
@@ -202,40 +306,6 @@
       "content": "Desktop settings"
     },
     {
-      "type": "range",
-      "id": "gap",
-      "label": "Gap between items",
-      "min": 0,
-      "max": 100,
-      "step": 2,
-      "unit": "px",
-      "default": 0
-    },
-    {
-      "type": "select",
-      "id": "horizontal_alignment",
-      "label": "Horizontal alignment",
-      "options": [
-        { "value": "left", "label": "Left" },
-        { "value": "center", "label": "Center" },
-        { "value": "right", "label": "Right" },
-        { "value": "stretch", "label": "Stretch" }
-      ],
-      "default": "stretch"
-    },
-    {
-      "type": "select",
-      "id": "vertical_alignment",
-      "label": "Vertical alignment",
-      "options": [
-        { "value": "top", "label": "Top" },
-        { "value": "middle", "label": "Middle" },
-        { "value": "bottom", "label": "Bottom" },
-        { "value": "space_between", "label": "Space between" }
-      ],
-      "default": "top"
-    },
-    {
       "type": "select",
       "id": "width",
       "label": "Width",
@@ -245,7 +315,7 @@
         { "value": "custom", "label": "Custom" }
       ],
       "default": "fill",
-      "info": "How this column shares space when placed inside another row or column"
+      "info": "How this image shares space when placed inside a row or column"
     },
     {
       "type": "text",
@@ -276,12 +346,7 @@
       "step": 20,
       "unit": "px",
       "default": 0,
-      "info": "0 means automatic"
-    },
-    {
-      "type": "header",
-      "content": "Paddings",
-      "info": "In pixels"
+      "info": "0 means automatic (the image's natural height). When set, the image is cropped/fitted to this height using the Fit setting above"
     },
     {
       "type": "number",
@@ -322,40 +387,6 @@
       "content": "Mobile settings"
     },
     {
-      "type": "range",
-      "id": "gap_mobile",
-      "label": "Gap between items",
-      "min": 0,
-      "max": 100,
-      "step": 2,
-      "unit": "px",
-      "default": 0
-    },
-    {
-      "type": "select",
-      "id": "horizontal_alignment_mobile",
-      "label": "Horizontal alignment",
-      "options": [
-        { "value": "left", "label": "Left" },
-        { "value": "center", "label": "Center" },
-        { "value": "right", "label": "Right" },
-        { "value": "stretch", "label": "Stretch" }
-      ],
-      "default": "stretch"
-    },
-    {
-      "type": "select",
-      "id": "vertical_alignment_mobile",
-      "label": "Vertical alignment",
-      "options": [
-        { "value": "top", "label": "Top" },
-        { "value": "middle", "label": "Middle" },
-        { "value": "bottom", "label": "Bottom" },
-        { "value": "space_between", "label": "Space between" }
-      ],
-      "default": "top"
-    },
-    {
       "type": "select",
       "id": "width_mobile",
       "label": "Width",
@@ -387,11 +418,6 @@
       "info": "Any CSS size: 200px, 20vw. Plain numbers are treated as %. Leave empty to use the same min-width as desktop"
     },
     {
-      "type": "header",
-      "content": "Paddings",
-      "info": "In pixels"
-    },
-    {
       "type": "number",
       "id": "padding_top_mobile",
       "label": "Padding top",
@@ -416,42 +442,10 @@
       "default": 0
     }
   ],
-  "blocks": [
-    {
-      "type": "@theme"
-    },
-    {
-      "type": "@app"
-    },
-    {
-      "type": "blk_flex-col"
-    },
-    {
-      "type": "blk_flex-row"
-    },
-    {
-      "type": "blk_richtext"
-    },
-    {
-      "type": "blk_background-image"
-    },
-    {
-      "type": "blk_button-cat"
-    },
-    {
-      "type": "blk_image"
-    },
-    {
-      "type": "blk_divider"
-    },
-    {
-      "type": "blk_product-card"
-    }
-  ],
   "presets": [
     {
-      "name": "Flex column",
-      "category": "Layout"
+      "name": "Image",
+      "category": "Custom blocks"
     }
   ]
 }
