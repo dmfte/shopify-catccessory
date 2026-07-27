@@ -121,19 +121,25 @@
 {% if block.settings.show_atc and product != blank %}
   {% form 'product', product, class: 'pcard-atc-form' %}
     <input type="hidden" name="id" value="{{ variant.id }}">
-    <div class="pcard-qty">
-      <button type="button" class="pcard-qty-btn" data-pcard-qty="minus" aria-label="Decrease quantity">&minus;</button>
-      <input
-        class="pcard-qty-input"
-        type="number"
-        name="quantity"
-        value="1"
-        min="1"
-        inputmode="numeric"
-        aria-label="Quantity"
-      >
-      <button type="button" class="pcard-qty-btn" data-pcard-qty="plus" aria-label="Increase quantity">+</button>
-    </div>
+    {% if block.settings.show_qty_selector %}
+      <div class="pcard-qty">
+        <button type="button" class="pcard-qty-btn" data-pcard-qty="minus" aria-label="Decrease quantity">
+          &minus;
+        </button>
+        <input
+          class="pcard-qty-input"
+          type="number"
+          name="quantity"
+          value="1"
+          min="1"
+          inputmode="numeric"
+          aria-label="Quantity"
+        >
+        <button type="button" class="pcard-qty-btn" data-pcard-qty="plus" aria-label="Increase quantity">+</button>
+      </div>
+    {% else %}
+      <input type="hidden" name="quantity" value="1">
+    {% endif %}
     {% if variant.available %}
       <button type="submit" class="pcard-atc-btn">ADD TO CART</button>
     {% else %}
@@ -568,9 +574,15 @@
     {
       "type": "checkbox",
       "id": "show_atc",
-      "label": "Show ADD TO CART with quantity",
-      "default": false,
-      "info": "Always placed at the end of the card"
+      "label": "Show ADD TO CART",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "show_qty_selector",
+      "label": "┗ Show quantity selector",
+      "default": true,
+      "visible_if": "{{ block.settings.show_atc }}"
     }
   ],
   "presets": [

@@ -95,7 +95,7 @@
   endif
 
   assign show_placeholder = false
-  if image == blank and request.design_mode
+  if image == blank and image_mobile == blank and request.design_mode
     assign show_placeholder = true
   endif
 %}
@@ -162,7 +162,7 @@
     }
   }
 {% endstyle %}
-{% if image %}
+{% if image or image_mobile %}
   {% if block.settings.link != blank %}
     <a
       href="{{ block.settings.link }}"
@@ -173,6 +173,30 @@
         {% if image_mobile %}
           <source media="(max-width: 749px)" srcset="{{ mobile_srcset }}" sizes="{{ sizes }}">
         {% endif %}
+        {% if image %}
+          {{
+            image
+            | image_url: width: 3840
+            | image_tag:
+              width: image.width,
+              height: image.height,
+              widths: widths,
+              sizes: sizes,
+              alt: alt,
+              loading: loading_value,
+              fetchpriority: fetchpriority_value
+          }}
+        {% else %}
+          <img alt="{{ alt }}" loading="{{ loading_value }}">
+        {% endif %}
+      </picture>
+    </a>
+  {% else %}
+    <picture {{ block.shopify_attributes }}>
+      {% if image_mobile %}
+        <source media="(max-width: 749px)" srcset="{{ mobile_srcset }}" sizes="{{ sizes }}">
+      {% endif %}
+      {% if image %}
         {{
           image
           | image_url: width: 3840
@@ -185,25 +209,9 @@
             loading: loading_value,
             fetchpriority: fetchpriority_value
         }}
-      </picture>
-    </a>
-  {% else %}
-    <picture {{ block.shopify_attributes }}>
-      {% if image_mobile %}
-        <source media="(max-width: 749px)" srcset="{{ mobile_srcset }}" sizes="{{ sizes }}">
+      {% else %}
+        <img alt="{{ alt }}" loading="{{ loading_value }}">
       {% endif %}
-      {{
-        image
-        | image_url: width: 3840
-        | image_tag:
-          width: image.width,
-          height: image.height,
-          widths: widths,
-          sizes: sizes,
-          alt: alt,
-          loading: loading_value,
-          fetchpriority: fetchpriority_value
-      }}
     </picture>
   {% endif %}
 {% endif %}
@@ -215,13 +223,14 @@
     {
       "type": "image_picker",
       "id": "image",
-      "label": "Image"
+      "label": "Image",
+      "info": "Shown on desktop. Leave empty to hide the image on desktop"
     },
     {
       "type": "image_picker",
       "id": "image_mobile",
       "label": "Image (mobile)",
-      "info": "Leave empty to use the same image as desktop. Use this for a differently cropped image on small screens"
+      "info": "Shown on small screens. This is independent of the desktop image and does not fall back to it — add the same image here too if you want it to match"
     },
     {
       "type": "text",
@@ -349,6 +358,21 @@
       "info": "0 means automatic (the image's natural height). When set, the image is cropped/fitted to this height using the Fit setting above"
     },
     {
+      "type": "range",
+      "id": "corner_radius",
+      "label": "Corner radius",
+      "min": 0,
+      "max": 50,
+      "step": 2,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "header",
+      "content": "Paddings",
+      "info": "In pixels"
+    },
+    {
       "type": "number",
       "id": "padding_top",
       "label": "Padding top",
@@ -370,16 +394,6 @@
       "type": "number",
       "id": "padding_right",
       "label": "Padding right",
-      "default": 0
-    },
-    {
-      "type": "range",
-      "id": "corner_radius",
-      "label": "Corner radius",
-      "min": 0,
-      "max": 50,
-      "step": 2,
-      "unit": "px",
       "default": 0
     },
     {
@@ -416,6 +430,11 @@
       "id": "min_width_mobile",
       "label": "Min width",
       "info": "Any CSS size: 200px, 20vw. Plain numbers are treated as %. Leave empty to use the same min-width as desktop"
+    },
+    {
+      "type": "header",
+      "content": "Paddings",
+      "info": "In pixels"
     },
     {
       "type": "number",

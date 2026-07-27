@@ -55,6 +55,18 @@
         animation: cat-tail-waggle 600ms ease-in-out;
       }
     }
+
+    &.cat-btn--secondary {
+      & .cat-shape {
+        background-color: var(--color-secondary-button-background);
+        color: var(--color-secondary-button-text);
+      }
+
+      &:hover .cat-shape {
+        background-color: var(--color-secondary-button-hover-background);
+        color: var(--color-secondary-button-hover-text);
+      }
+    }
   }
 
   @keyframes cat-tail-waggle {
@@ -71,7 +83,7 @@
 {% endstylesheet %}
 <a
   href="{{ block.settings.link | default: '#' }}"
-  class="cat-btn{% if block.settings.animate_tail %} cat-btn--animated{% endif %}"
+  class="cat-btn{% if block.settings.style == 'secondary' %} cat-btn--secondary{% endif %}{% if block.settings.animate_tail %} cat-btn--animated{% endif %}"
   {% if block.settings.open_in_new_tab %}
     target="_blank" rel="noopener"
   {% endif %}
@@ -135,6 +147,44 @@
         }
       ],
       "default": "center"
+    },
+    {
+      "type": "header",
+      "content": "Style"
+    },
+    {
+      "type": "select",
+      "id": "style",
+      "label": "Style",
+      "options": [
+        {
+          "value": "primary",
+          "label": "Primary"
+        },
+        {
+          "value": "secondary",
+          "label": "Secondary"
+        }
+      ],
+      "default": "primary",
+      "info": "Secondary uses the theme's secondary button colors for lower-emphasis actions."
+    },
+    {
+      "type": "range",
+      "id": "font_size",
+      "label": "Text size",
+      "min": 8,
+      "max": 16,
+      "step": 1,
+      "unit": "px",
+      "default": 12,
+      "info": "Measured on the cat's native canvas, so it scales with the button size"
+    },
+    {
+      "type": "checkbox",
+      "id": "animate_tail",
+      "label": "Wag tail on hover",
+      "default": true
     },
     {
       "type": "header",
@@ -223,27 +273,6 @@
       "step": 2,
       "unit": "px",
       "default": 0
-    },
-    {
-      "type": "header",
-      "content": "Style"
-    },
-    {
-      "type": "range",
-      "id": "font_size",
-      "label": "Text size",
-      "min": 8,
-      "max": 16,
-      "step": 1,
-      "unit": "px",
-      "default": 12,
-      "info": "Measured on the cat's native canvas, so it scales with the button size"
-    },
-    {
-      "type": "checkbox",
-      "id": "animate_tail",
-      "label": "Wag tail on hover",
-      "default": true
     }
   ],
   "presets": [
