@@ -1,0 +1,359 @@
+{
+  "sections": {
+    "hub-intro": {
+      "type": "theme_blocks",
+      "blocks": {
+        "intro_col": {
+          "type": "blk_flex-col",
+          "settings": {
+            "gap": 20,
+            "horizontal_alignment": "center",
+            "vertical_alignment": "top",
+            "padding_top": 64,
+            "padding_bottom": 40,
+            "padding_top_mobile": 40,
+            "padding_bottom_mobile": 24
+          },
+          "blocks": {
+            "heading": {
+              "type": "blk_richtext",
+              "settings": {
+                "richtext": "<h1>Articles Hub</h1>",
+                "alignment": "center"
+              }
+            },
+            "subheading": {
+              "type": "blk_richtext",
+              "settings": {
+                "richtext": "<p>Explore our guides by category.</p>",
+                "alignment": "center"
+              }
+            },
+            "chips_row": {
+              "type": "blk_flex-row",
+              "settings": {
+                "gap": 12,
+                "wrap": true,
+                "horizontal_alignment": "center",
+                "vertical_alignment": "middle",
+                "width": "fit",
+                "stack_mobile": false
+              },
+              "blocks": {
+                "chip_psychology": {
+                  "type": "blk_button-cat",
+                  "settings": {
+                    "label": "Feline Psychology",
+                    "link": "#shopify-section-cat-feline-psychology",
+                    "width": "220px",
+                    "style": "secondary"
+                  }
+                },
+                "chip_grooming": {
+                  "type": "blk_button-cat",
+                  "settings": {
+                    "label": "Cat Care & Grooming",
+                    "link": "#shopify-section-cat-grooming-care",
+                    "width": "220px",
+                    "style": "secondary"
+                  }
+                },
+                "chip_wellness": {
+                  "type": "blk_button-cat",
+                  "settings": {
+                    "label": "Feline Wellness",
+                    "link": "#shopify-section-cat-feline-wellness",
+                    "width": "220px",
+                    "style": "secondary"
+                  }
+                },
+                "chip_curiosities": {
+                  "type": "blk_button-cat",
+                  "settings": {
+                    "label": "Feline Curiosities",
+                    "link": "#shopify-section-cat-feline-curiosities",
+                    "width": "220px",
+                    "style": "secondary"
+                  }
+                }
+              },
+              "block_order": ["chip_psychology", "chip_grooming", "chip_wellness", "chip_curiosities"]
+            }
+          },
+          "block_order": ["heading", "subheading", "chips_row"]
+        }
+      },
+      "block_order": ["intro_col"],
+      "settings": {
+        "full_width": false
+      }
+    },
+    "cat-feline-psychology": {
+      "type": "featured-blog-posts",
+      "blocks": {
+        "static-blog-title": {
+          "type": "_featured-blog-posts-title",
+          "name": "t:names.title",
+          "static": true,
+          "settings": {
+            "text": "<h3>Feline Psychology</h3>",
+            "type_preset": "rte"
+          }
+        },
+        "static-blog-post-card": {
+          "type": "_featured-blog-posts-card",
+          "name": "t:names.blog_card",
+          "static": true,
+          "settings": {},
+          "blocks": {
+            "title": {
+              "type": "_heading",
+              "name": "t:names.title",
+              "static": true,
+              "settings": {
+                "text": "<h4>{{ closest.article.title }}</h4>",
+                "show_alignment": false
+              }
+            },
+            "blog-post-info-text": {
+              "type": "_blog-post-info-text",
+              "name": "t:names.details",
+              "static": true,
+              "settings": {
+                "padding-block-start": 0,
+                "padding-block-end": 0,
+                "show_alignment": false
+              }
+            },
+            "blog-post-description": {
+              "type": "_blog-post-description",
+              "name": "t:names.excerpt",
+              "static": true,
+              "settings": {
+                "padding-block-start": 8,
+                "padding-block-end": 0
+              }
+            }
+          }
+        }
+      },
+      "settings": {
+        "blog": "",
+        "layout_type": "carousel",
+        "post_limit": 5,
+        "columns": 3,
+        "columns_gap": 8,
+        "mobile_card_size": "60cqw",
+        "icons_style": "arrow",
+        "icons_shape": "circle",
+        "section_width": "page-width",
+        "gap": 12,
+        "color_scheme": "scheme-1",
+        "padding-block-start": 32,
+        "padding-block-end": 32
+      }
+    },
+    "cat-grooming-care": {
+      "type": "featured-blog-posts",
+      "blocks": {
+        "static-blog-title": {
+          "type": "_featured-blog-posts-title",
+          "name": "t:names.title",
+          "static": true,
+          "settings": {
+            "text": "<h3>Cat Care &amp; Grooming</h3>",
+            "type_preset": "rte"
+          }
+        },
+        "static-blog-post-card": {
+          "type": "_featured-blog-posts-card",
+          "name": "t:names.blog_card",
+          "static": true,
+          "settings": {},
+          "blocks": {
+            "title": {
+              "type": "_heading",
+              "name": "t:names.title",
+              "static": true,
+              "settings": {
+                "text": "<h4>{{ closest.article.title }}</h4>",
+                "show_alignment": false
+              }
+            },
+            "blog-post-info-text": {
+              "type": "_blog-post-info-text",
+              "name": "t:names.details",
+              "static": true,
+              "settings": {
+                "padding-block-start": 0,
+                "padding-block-end": 0,
+                "show_alignment": false
+              }
+            },
+            "blog-post-description": {
+              "type": "_blog-post-description",
+              "name": "t:names.excerpt",
+              "static": true,
+              "settings": {
+                "padding-block-start": 8,
+                "padding-block-end": 0
+              }
+            }
+          }
+        }
+      },
+      "settings": {
+        "blog": "",
+        "layout_type": "carousel",
+        "post_limit": 5,
+        "columns": 3,
+        "columns_gap": 8,
+        "mobile_card_size": "60cqw",
+        "icons_style": "arrow",
+        "icons_shape": "circle",
+        "section_width": "page-width",
+        "gap": 12,
+        "color_scheme": "scheme-1",
+        "padding-block-start": 32,
+        "padding-block-end": 32
+      }
+    },
+    "cat-feline-wellness": {
+      "type": "featured-blog-posts",
+      "blocks": {
+        "static-blog-title": {
+          "type": "_featured-blog-posts-title",
+          "name": "t:names.title",
+          "static": true,
+          "settings": {
+            "text": "<h3>Feline Wellness</h3>",
+            "type_preset": "rte"
+          }
+        },
+        "static-blog-post-card": {
+          "type": "_featured-blog-posts-card",
+          "name": "t:names.blog_card",
+          "static": true,
+          "settings": {},
+          "blocks": {
+            "title": {
+              "type": "_heading",
+              "name": "t:names.title",
+              "static": true,
+              "settings": {
+                "text": "<h4>{{ closest.article.title }}</h4>",
+                "show_alignment": false
+              }
+            },
+            "blog-post-info-text": {
+              "type": "_blog-post-info-text",
+              "name": "t:names.details",
+              "static": true,
+              "settings": {
+                "padding-block-start": 0,
+                "padding-block-end": 0,
+                "show_alignment": false
+              }
+            },
+            "blog-post-description": {
+              "type": "_blog-post-description",
+              "name": "t:names.excerpt",
+              "static": true,
+              "settings": {
+                "padding-block-start": 8,
+                "padding-block-end": 0
+              }
+            }
+          }
+        }
+      },
+      "settings": {
+        "blog": "",
+        "layout_type": "carousel",
+        "post_limit": 5,
+        "columns": 3,
+        "columns_gap": 8,
+        "mobile_card_size": "60cqw",
+        "icons_style": "arrow",
+        "icons_shape": "circle",
+        "section_width": "page-width",
+        "gap": 12,
+        "color_scheme": "scheme-1",
+        "padding-block-start": 32,
+        "padding-block-end": 32
+      }
+    },
+    "cat-feline-curiosities": {
+      "type": "featured-blog-posts",
+      "blocks": {
+        "static-blog-title": {
+          "type": "_featured-blog-posts-title",
+          "name": "t:names.title",
+          "static": true,
+          "settings": {
+            "text": "<h3>Feline Curiosities</h3>",
+            "type_preset": "rte"
+          }
+        },
+        "static-blog-post-card": {
+          "type": "_featured-blog-posts-card",
+          "name": "t:names.blog_card",
+          "static": true,
+          "settings": {},
+          "blocks": {
+            "title": {
+              "type": "_heading",
+              "name": "t:names.title",
+              "static": true,
+              "settings": {
+                "text": "<h4>{{ closest.article.title }}</h4>",
+                "show_alignment": false
+              }
+            },
+            "blog-post-info-text": {
+              "type": "_blog-post-info-text",
+              "name": "t:names.details",
+              "static": true,
+              "settings": {
+                "padding-block-start": 0,
+                "padding-block-end": 0,
+                "show_alignment": false
+              }
+            },
+            "blog-post-description": {
+              "type": "_blog-post-description",
+              "name": "t:names.excerpt",
+              "static": true,
+              "settings": {
+                "padding-block-start": 8,
+                "padding-block-end": 0
+              }
+            }
+          }
+        }
+      },
+      "settings": {
+        "blog": "",
+        "layout_type": "carousel",
+        "post_limit": 5,
+        "columns": 3,
+        "columns_gap": 8,
+        "mobile_card_size": "60cqw",
+        "icons_style": "arrow",
+        "icons_shape": "circle",
+        "section_width": "page-width",
+        "gap": 12,
+        "color_scheme": "scheme-1",
+        "padding-block-start": 32,
+        "padding-block-end": 32
+      }
+    }
+  },
+  "order": [
+    "hub-intro",
+    "cat-feline-psychology",
+    "cat-grooming-care",
+    "cat-feline-wellness",
+    "cat-feline-curiosities"
+  ]
+}
