@@ -1,3 +1,12 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "sections": {
     "hub-intro": {
@@ -6,38 +15,142 @@
         "intro_col": {
           "type": "blk_flex-col",
           "settings": {
+            "inherit_color_scheme": true,
+            "color_scheme": "",
+            "show_desktop": true,
+            "show_mobile": true,
+            "anchor_id": "",
+            "anchor_offset": 0,
             "gap": 20,
             "horizontal_alignment": "center",
             "vertical_alignment": "top",
+            "width": "fill",
+            "custom_width": "100%",
+            "max_width": "",
+            "min_width": "",
+            "min_height": 0,
+            "corner_radius": 0,
             "padding_top": 64,
             "padding_bottom": 40,
+            "padding_left": 0,
+            "padding_right": 0,
+            "gap_mobile": 0,
+            "horizontal_alignment_mobile": "stretch",
+            "vertical_alignment_mobile": "top",
+            "width_mobile": "default",
+            "custom_width_mobile": "",
+            "max_width_mobile": "",
+            "min_width_mobile": "",
             "padding_top_mobile": 40,
-            "padding_bottom_mobile": 24
+            "padding_bottom_mobile": 24,
+            "padding_left_mobile": 0,
+            "padding_right_mobile": 0
           },
           "blocks": {
             "heading": {
               "type": "blk_richtext",
               "settings": {
                 "richtext": "<h1>Articles Hub</h1>",
-                "alignment": "center"
-              }
+                "p_style": "paragraph",
+                "font_size_p": 0,
+                "font_size_h1": 0,
+                "font_size_h2": 0,
+                "font_size_h3": 0,
+                "font_size_h4": 0,
+                "font_size_h5": 0,
+                "font_size_h6": 0,
+                "full_width": true,
+                "alignment": "center",
+                "padding_top": 0,
+                "padding_bottom": 0,
+                "padding_left": 0,
+                "padding_right": 0,
+                "full_width_mobile": "default",
+                "alignment_mobile": "default",
+                "font_size_p_mobile": 0,
+                "font_size_h1_mobile": 0,
+                "font_size_h2_mobile": 0,
+                "font_size_h3_mobile": 0,
+                "font_size_h4_mobile": 0,
+                "font_size_h5_mobile": 0,
+                "font_size_h6_mobile": 0,
+                "padding_top_mobile": 0,
+                "padding_bottom_mobile": 0,
+                "padding_left_mobile": 0,
+                "padding_right_mobile": 0
+              },
+              "blocks": {}
             },
             "subheading": {
               "type": "blk_richtext",
               "settings": {
                 "richtext": "<p>Explore our guides by category.</p>",
-                "alignment": "center"
-              }
+                "p_style": "paragraph",
+                "font_size_p": 0,
+                "font_size_h1": 0,
+                "font_size_h2": 0,
+                "font_size_h3": 0,
+                "font_size_h4": 0,
+                "font_size_h5": 0,
+                "font_size_h6": 0,
+                "full_width": true,
+                "alignment": "center",
+                "padding_top": 0,
+                "padding_bottom": 0,
+                "padding_left": 0,
+                "padding_right": 0,
+                "full_width_mobile": "default",
+                "alignment_mobile": "default",
+                "font_size_p_mobile": 0,
+                "font_size_h1_mobile": 0,
+                "font_size_h2_mobile": 0,
+                "font_size_h3_mobile": 0,
+                "font_size_h4_mobile": 0,
+                "font_size_h5_mobile": 0,
+                "font_size_h6_mobile": 0,
+                "padding_top_mobile": 0,
+                "padding_bottom_mobile": 0,
+                "padding_left_mobile": 0,
+                "padding_right_mobile": 0
+              },
+              "blocks": {}
             },
             "chips_row": {
               "type": "blk_flex-row",
               "settings": {
+                "inherit_color_scheme": true,
+                "color_scheme": "",
+                "show_desktop": true,
+                "show_mobile": true,
+                "anchor_id": "",
+                "anchor_offset": 0,
                 "gap": 12,
-                "wrap": true,
                 "horizontal_alignment": "center",
                 "vertical_alignment": "middle",
+                "wrap": true,
                 "width": "fit",
-                "stack_mobile": false
+                "custom_width": "100%",
+                "max_width": "",
+                "min_width": "",
+                "min_height": 0,
+                "corner_radius": 0,
+                "padding_top": 0,
+                "padding_bottom": 0,
+                "padding_left": 0,
+                "padding_right": 0,
+                "stack_mobile": false,
+                "reverse_mobile": false,
+                "gap_mobile": 0,
+                "horizontal_alignment_mobile": "left",
+                "vertical_alignment_mobile": "top",
+                "width_mobile": "default",
+                "custom_width_mobile": "",
+                "max_width_mobile": "",
+                "min_width_mobile": "",
+                "padding_top_mobile": 0,
+                "padding_bottom_mobile": 0,
+                "padding_left_mobile": 0,
+                "padding_right_mobile": 0
               },
               "blocks": {
                 "chip_psychology": {
@@ -45,45 +158,108 @@
                   "settings": {
                     "label": "Feline Psychology",
                     "link": "#shopify-section-cat-feline-psychology",
+                    "open_in_new_tab": false,
                     "width": "220px",
-                    "style": "secondary"
-                  }
+                    "alignment": "center",
+                    "style": "secondary",
+                    "font_size": 12,
+                    "animate_tail": true,
+                    "padding_top": 0,
+                    "padding_bottom": 0,
+                    "padding_left": 0,
+                    "padding_right": 0,
+                    "padding_top_mobile": 0,
+                    "padding_bottom_mobile": 0,
+                    "padding_left_mobile": 0,
+                    "padding_right_mobile": 0
+                  },
+                  "blocks": {}
                 },
                 "chip_grooming": {
                   "type": "blk_button-cat",
                   "settings": {
                     "label": "Cat Care & Grooming",
                     "link": "#shopify-section-cat-grooming-care",
+                    "open_in_new_tab": false,
                     "width": "220px",
-                    "style": "secondary"
-                  }
+                    "alignment": "center",
+                    "style": "secondary",
+                    "font_size": 12,
+                    "animate_tail": true,
+                    "padding_top": 0,
+                    "padding_bottom": 0,
+                    "padding_left": 0,
+                    "padding_right": 0,
+                    "padding_top_mobile": 0,
+                    "padding_bottom_mobile": 0,
+                    "padding_left_mobile": 0,
+                    "padding_right_mobile": 0
+                  },
+                  "blocks": {}
                 },
                 "chip_wellness": {
                   "type": "blk_button-cat",
                   "settings": {
                     "label": "Feline Wellness",
                     "link": "#shopify-section-cat-feline-wellness",
+                    "open_in_new_tab": false,
                     "width": "220px",
-                    "style": "secondary"
-                  }
+                    "alignment": "center",
+                    "style": "secondary",
+                    "font_size": 12,
+                    "animate_tail": true,
+                    "padding_top": 0,
+                    "padding_bottom": 0,
+                    "padding_left": 0,
+                    "padding_right": 0,
+                    "padding_top_mobile": 0,
+                    "padding_bottom_mobile": 0,
+                    "padding_left_mobile": 0,
+                    "padding_right_mobile": 0
+                  },
+                  "blocks": {}
                 },
                 "chip_curiosities": {
                   "type": "blk_button-cat",
                   "settings": {
                     "label": "Feline Curiosities",
                     "link": "#shopify-section-cat-feline-curiosities",
+                    "open_in_new_tab": false,
                     "width": "220px",
-                    "style": "secondary"
-                  }
+                    "alignment": "center",
+                    "style": "secondary",
+                    "font_size": 12,
+                    "animate_tail": true,
+                    "padding_top": 0,
+                    "padding_bottom": 0,
+                    "padding_left": 0,
+                    "padding_right": 0,
+                    "padding_top_mobile": 0,
+                    "padding_bottom_mobile": 0,
+                    "padding_left_mobile": 0,
+                    "padding_right_mobile": 0
+                  },
+                  "blocks": {}
                 }
               },
-              "block_order": ["chip_psychology", "chip_grooming", "chip_wellness", "chip_curiosities"]
+              "block_order": [
+                "chip_psychology",
+                "chip_grooming",
+                "chip_wellness",
+                "chip_curiosities"
+              ]
             }
           },
-          "block_order": ["heading", "subheading", "chips_row"]
+          "block_order": [
+            "heading",
+            "subheading",
+            "chips_row"
+          ]
         }
       },
-      "block_order": ["intro_col"],
+      "block_order": [
+        "intro_col"
+      ],
       "settings": {
         "full_width": false
       }
@@ -97,252 +273,133 @@
           "static": true,
           "settings": {
             "text": "<h3>Feline Psychology</h3>",
-            "type_preset": "rte"
-          }
+            "width": "fit-content",
+            "max_width": "normal",
+            "alignment": "left",
+            "type_preset": "rte",
+            "font": "var(--font-body--family)",
+            "font_size": "1rem",
+            "line_height": "normal",
+            "letter_spacing": "normal",
+            "case": "none",
+            "wrap": "pretty",
+            "color": "var(--color-foreground)",
+            "background": false,
+            "background_color": "#00000026",
+            "corner_radius": 0,
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {}
         },
         "static-blog-post-card": {
           "type": "_featured-blog-posts-card",
           "name": "t:names.blog_card",
-          "static": true,
-          "settings": {},
-          "blocks": {
-            "title": {
-              "type": "_heading",
-              "name": "t:names.title",
-              "static": true,
-              "settings": {
-                "text": "<h4>{{ closest.article.title }}</h4>",
-                "show_alignment": false
-              }
-            },
-            "blog-post-info-text": {
-              "type": "_blog-post-info-text",
-              "name": "t:names.details",
-              "static": true,
-              "settings": {
-                "padding-block-start": 0,
-                "padding-block-end": 0,
-                "show_alignment": false
-              }
-            },
-            "blog-post-description": {
-              "type": "_blog-post-description",
-              "name": "t:names.excerpt",
-              "static": true,
-              "settings": {
-                "padding-block-start": 8,
-                "padding-block-end": 0
-              }
-            }
-          }
-        }
-      },
-      "settings": {
-        "blog": "",
-        "layout_type": "carousel",
-        "post_limit": 5,
-        "columns": 3,
-        "columns_gap": 8,
-        "mobile_card_size": "60cqw",
-        "icons_style": "arrow",
-        "icons_shape": "circle",
-        "section_width": "page-width",
-        "gap": 12,
-        "color_scheme": "scheme-1",
-        "padding-block-start": 32,
-        "padding-block-end": 32
-      }
-    },
-    "cat-grooming-care": {
-      "type": "featured-blog-posts",
-      "blocks": {
-        "static-blog-title": {
-          "type": "_featured-blog-posts-title",
-          "name": "t:names.title",
           "static": true,
           "settings": {
-            "text": "<h3>Cat Care &amp; Grooming</h3>",
-            "type_preset": "rte"
-          }
-        },
-        "static-blog-post-card": {
-          "type": "_featured-blog-posts-card",
-          "name": "t:names.blog_card",
-          "static": true,
-          "settings": {},
+            "alignment": "left",
+            "gap": 8,
+            "inherit_color_scheme": true,
+            "color_scheme": "",
+            "border": "none",
+            "border_width": 1,
+            "border_opacity": 100,
+            "border_radius": 0,
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
           "blocks": {
+            "image": {
+              "type": "_featured-blog-posts-image",
+              "static": true,
+              "settings": {
+                "image_ratio": "square",
+                "border": "none",
+                "border_width": 1,
+                "border_opacity": 100,
+                "border_radius": 0
+              },
+              "blocks": {}
+            },
             "title": {
               "type": "_heading",
               "name": "t:names.title",
               "static": true,
               "settings": {
+                "type_preset": "rte",
+                "font": "var(--font-body--family)",
+                "font_size": "1rem",
+                "line_height": "normal",
+                "letter_spacing": "normal",
+                "case": "none",
+                "wrap": "pretty",
+                "color": "var(--color-foreground)",
                 "text": "<h4>{{ closest.article.title }}</h4>",
-                "show_alignment": false
-              }
+                "read_only": false,
+                "alignment": "left",
+                "show_alignment": false,
+                "padding-block-start": 0,
+                "padding-block-end": 0,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {}
             },
             "blog-post-info-text": {
               "type": "_blog-post-info-text",
               "name": "t:names.details",
               "static": true,
               "settings": {
+                "show_date": true,
+                "show_author": true,
+                "type_preset": "",
+                "alignment": "left",
+                "show_alignment": false,
                 "padding-block-start": 0,
-                "padding-block-end": 0,
-                "show_alignment": false
-              }
+                "padding-block-end": 0
+              },
+              "blocks": {}
             },
             "blog-post-description": {
               "type": "_blog-post-description",
               "name": "t:names.excerpt",
               "static": true,
               "settings": {
+                "type_preset": "rte",
+                "font": "var(--font-body--family)",
+                "font_size": "1rem",
+                "line_height": "normal",
+                "letter_spacing": "normal",
+                "case": "none",
+                "wrap": "pretty",
+                "color": "var(--color-foreground)",
                 "padding-block-start": 8,
                 "padding-block-end": 0
-              }
+              },
+              "blocks": {}
             }
-          }
+          },
+          "block_order": []
         }
       },
       "settings": {
-        "blog": "",
+        "blog": "feline-psychology",
         "layout_type": "carousel",
+        "carousel_on_mobile": true,
         "post_limit": 5,
-        "columns": 3,
-        "columns_gap": 8,
+        "columns": 4,
+        "mobile_columns": "2",
         "mobile_card_size": "60cqw",
+        "columns_gap": 8,
+        "rows_gap": 16,
         "icons_style": "arrow",
         "icons_shape": "circle",
         "section_width": "page-width",
-        "gap": 12,
-        "color_scheme": "scheme-1",
-        "padding-block-start": 32,
-        "padding-block-end": 32
-      }
-    },
-    "cat-feline-wellness": {
-      "type": "featured-blog-posts",
-      "blocks": {
-        "static-blog-title": {
-          "type": "_featured-blog-posts-title",
-          "name": "t:names.title",
-          "static": true,
-          "settings": {
-            "text": "<h3>Feline Wellness</h3>",
-            "type_preset": "rte"
-          }
-        },
-        "static-blog-post-card": {
-          "type": "_featured-blog-posts-card",
-          "name": "t:names.blog_card",
-          "static": true,
-          "settings": {},
-          "blocks": {
-            "title": {
-              "type": "_heading",
-              "name": "t:names.title",
-              "static": true,
-              "settings": {
-                "text": "<h4>{{ closest.article.title }}</h4>",
-                "show_alignment": false
-              }
-            },
-            "blog-post-info-text": {
-              "type": "_blog-post-info-text",
-              "name": "t:names.details",
-              "static": true,
-              "settings": {
-                "padding-block-start": 0,
-                "padding-block-end": 0,
-                "show_alignment": false
-              }
-            },
-            "blog-post-description": {
-              "type": "_blog-post-description",
-              "name": "t:names.excerpt",
-              "static": true,
-              "settings": {
-                "padding-block-start": 8,
-                "padding-block-end": 0
-              }
-            }
-          }
-        }
-      },
-      "settings": {
-        "blog": "",
-        "layout_type": "carousel",
-        "post_limit": 5,
-        "columns": 3,
-        "columns_gap": 8,
-        "mobile_card_size": "60cqw",
-        "icons_style": "arrow",
-        "icons_shape": "circle",
-        "section_width": "page-width",
-        "gap": 12,
-        "color_scheme": "scheme-1",
-        "padding-block-start": 32,
-        "padding-block-end": 32
-      }
-    },
-    "cat-feline-curiosities": {
-      "type": "featured-blog-posts",
-      "blocks": {
-        "static-blog-title": {
-          "type": "_featured-blog-posts-title",
-          "name": "t:names.title",
-          "static": true,
-          "settings": {
-            "text": "<h3>Feline Curiosities</h3>",
-            "type_preset": "rte"
-          }
-        },
-        "static-blog-post-card": {
-          "type": "_featured-blog-posts-card",
-          "name": "t:names.blog_card",
-          "static": true,
-          "settings": {},
-          "blocks": {
-            "title": {
-              "type": "_heading",
-              "name": "t:names.title",
-              "static": true,
-              "settings": {
-                "text": "<h4>{{ closest.article.title }}</h4>",
-                "show_alignment": false
-              }
-            },
-            "blog-post-info-text": {
-              "type": "_blog-post-info-text",
-              "name": "t:names.details",
-              "static": true,
-              "settings": {
-                "padding-block-start": 0,
-                "padding-block-end": 0,
-                "show_alignment": false
-              }
-            },
-            "blog-post-description": {
-              "type": "_blog-post-description",
-              "name": "t:names.excerpt",
-              "static": true,
-              "settings": {
-                "padding-block-start": 8,
-                "padding-block-end": 0
-              }
-            }
-          }
-        }
-      },
-      "settings": {
-        "blog": "",
-        "layout_type": "carousel",
-        "post_limit": 5,
-        "columns": 3,
-        "columns_gap": 8,
-        "mobile_card_size": "60cqw",
-        "icons_style": "arrow",
-        "icons_shape": "circle",
-        "section_width": "page-width",
-        "gap": 12,
+        "gap": 25,
         "color_scheme": "scheme-1",
         "padding-block-start": 32,
         "padding-block-end": 32
@@ -351,9 +408,6 @@
   },
   "order": [
     "hub-intro",
-    "cat-feline-psychology",
-    "cat-grooming-care",
-    "cat-feline-wellness",
-    "cat-feline-curiosities"
+    "cat-feline-psychology"
   ]
 }

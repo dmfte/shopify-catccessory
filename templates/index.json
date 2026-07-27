@@ -906,7 +906,7 @@
                       "settings": {
                         "image": "shopify://shop_images/Cats_playing_with_accessories.jpg",
                         "image_mobile": "shopify://shop_images/Cats_playing_with_accessories.jpg",
-                        "alt": "Cats surrounded by curated Whisker Atelier accessories in a cozy living room",
+                        "alt": "Cats surrounded by curated Catcessory accessories in a cozy living room",
                         "link": "",
                         "open_in_new_tab": false,
                         "object_fit": "cover",
@@ -1086,7 +1086,7 @@
                           "type": "blk_richtext",
                           "name": "Paragraph 1",
                           "settings": {
-                            "richtext": "<p>At Whisker Atelier, we believe that every detail of your feline friend’s life deserves to be exceptional. Our carefully curated collection of cat essentials is designed to blend seamlessly into your home while providing unmatched comfort and function.</p>",
+                            "richtext": "<p>At Catcessory, we believe that every detail of your feline friend’s life deserves to be exceptional. Our carefully curated collection of cat essentials is designed to blend seamlessly into your home while providing unmatched comfort and function.</p>",
                             "p_style": "paragraph",
                             "font_size_p": 0,
                             "font_size_h1": 0,
@@ -1157,7 +1157,7 @@
                           "name": "Cat button",
                           "settings": {
                             "label": "DISCOVER OUR STORY",
-                            "link": "",
+                            "link": "/pages/meow-story",
                             "open_in_new_tab": false,
                             "width": "260px",
                             "alignment": "left",

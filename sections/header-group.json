@@ -17,7 +17,21 @@
         "announcement_BxgCk9": {
           "type": "_announcement",
           "settings": {
-            "text": "Welcome to our store",
+            "text": "Free US shipping on orders $35+",
+            "link": "",
+            "font": "var(--font-subheading--family)",
+            "font_size": "0.75rem",
+            "weight": "",
+            "letter_spacing": "normal",
+            "case": "none"
+          },
+          "blocks": {}
+        },
+        "announcement_QPiWQx": {
+          "type": "_announcement",
+          "name": "t:names.announcement",
+          "settings": {
+            "text": "Use code WELCOME10 for a 10% discount",
             "link": "",
             "font": "var(--font-subheading--family)",
             "font_size": "0.75rem",
@@ -29,16 +43,17 @@
         }
       },
       "block_order": [
-        "announcement_BxgCk9"
+        "announcement_BxgCk9",
+        "announcement_QPiWQx"
       ],
       "name": "t:names.announcement_bar",
       "settings": {
-        "speed": 5,
+        "speed": 6,
         "section_width": "page-width",
-        "color_scheme": "scheme-1",
-        "divider_width": 1,
-        "padding-block-start": 15,
-        "padding-block-end": 15
+        "color_scheme": "scheme-5",
+        "divider_width": 5,
+        "padding-block-start": 10,
+        "padding-block-end": 10
       }
     },
     "header_section": {
@@ -60,7 +75,7 @@
           "settings": {
             "menu": "main-menu",
             "color_scheme": "",
-            "type_font_primary_size": "0.875rem",
+            "type_font_primary_size": "1.125rem",
             "menu_font_style": "inverse",
             "type_font_primary_link": "body",
             "type_case_primary_link": "none",
@@ -79,8 +94,9 @@
       },
       "settings": {
         "logo_position": "left",
-        "menu_position": "left",
+        "menu_position": "center",
         "menu_row": "top",
+        "customer_account_menu": "customer-account-main-menu",
         "show_search": true,
         "search_position": "right",
         "search_row": "top",
@@ -97,7 +113,11 @@
         "divider_width": 0,
         "divider_size": "page-width",
         "border_width": 0,
-        "color_scheme_top": "scheme-1",
+        "actions_display_style": "icon",
+        "actions_font_size": "0.875rem",
+        "actions_font": "body",
+        "actions_text_case": "none",
+        "color_scheme_top": "scheme-3",
         "color_scheme_bottom": "",
         "color_scheme_transparent": "scheme-6",
         "enable_transparent_header_home": false,
