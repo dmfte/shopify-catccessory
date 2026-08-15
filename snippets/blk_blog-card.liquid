@@ -1,0 +1,143 @@
+{%- doc -%}
+  Renders an article card, shared by blk_blog-card (manual slides) and blk_blog-carousel
+  (auto-populated slides) so both sources render identical card markup.
+
+  @param {object} [article] - The article to render. Shows a design-mode placeholder when blank.
+  @param {boolean} [show_image] - Whether to render the article image
+  @param {string} [image_height] - 'small' | 'medium' | 'large', default 'medium'
+  @param {number} [corner_radius] - Corner radius in px applied to the image
+  @param {boolean} [show_date] - Whether to show the published date
+  @param {boolean} [show_author] - Whether to show the author name
+  @param {boolean} [show_excerpt] - Whether to show a truncated excerpt
+  @param {number} [excerpt_words] - Word count the excerpt is truncated to, default 20
+  @param {string} [attributes] - Additional HTML attributes added to the root element (e.g. block.shopify_attributes)
+
+  @example
+  {% render 'blk_blog-card', article: article, show_image: true, show_date: true, show_excerpt: true %}
+{%- enddoc -%}
+
+{%- liquid
+  assign image_height = image_height | default: 'medium'
+  assign corner_radius = corner_radius | default: 0
+  assign excerpt_words = excerpt_words | default: 20
+  assign excerpt_source = article.excerpt | default: article.content
+  assign image_class = 'bcard-image bcard-image--' | append: image_height
+  assign image_style = 'border-radius: ' | append: corner_radius | append: 'px'
+-%}
+
+{% if article == blank %}
+  {% if request.design_mode %}
+    <div class="bcard bcard--empty" {{ attributes }}>Select an article</div>
+  {% endif %}
+{% else %}
+  <a class="bcard" href="{{ article.url }}" {{ attributes }}>
+    {% if show_image %}
+      {% if article.image %}
+        {{
+          article.image
+          | image_url: width: 1200
+          | image_tag:
+            widths: '240, 480, 720, 960, 1200',
+            sizes: 'auto, (min-width: 750px) 33vw, 100vw',
+            alt: article.title,
+            loading: 'lazy',
+            class: image_class,
+            style: image_style
+        }}
+      {% elsif request.design_mode %}
+        <div class="bcard-image-placeholder bcard-image--{{ image_height }}" style="{{ image_style }}">
+          Article image
+        </div>
+      {% endif %}
+    {% endif %}
+    <div class="bcard-content">
+      <h4 class="bcard-title">{{ article.title }}</h4>
+      {% if show_date or show_author %}
+        <div class="bcard-meta">
+          {% if show_date %}
+            <span>{{ article.published_at | time_tag: format: 'date' }}</span>
+          {% endif %}
+          {% if show_date and show_author %}
+            <span aria-hidden="true">&middot;</span>
+          {% endif %}
+          {% if show_author %}
+            <span>{{ article.author }}</span>
+          {% endif %}
+        </div>
+      {% endif %}
+      {% if show_excerpt and excerpt_source != blank %}
+        <p class="bcard-excerpt">{{ excerpt_source | strip_html | truncatewords: excerpt_words }}</p>
+      {% endif %}
+    </div>
+  </a>
+{% endif %}
+
+{% stylesheet %}
+  .bcard {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    width: 100%;
+    height: 100%;
+    color: inherit;
+    text-decoration: none;
+    overflow-wrap: anywhere;
+
+    & .bcard-title {
+      margin: 0;
+    }
+  }
+
+  .bcard-image,
+  .bcard-image-placeholder {
+    display: block;
+    width: 100%;
+    object-fit: cover;
+  }
+
+  .bcard-image--small {
+    height: 180px;
+  }
+
+  .bcard-image--medium {
+    height: 240px;
+  }
+
+  .bcard-image--large {
+    height: 320px;
+  }
+
+  .bcard-image-placeholder,
+  .bcard--empty {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    outline: 2px dashed rgb(var(--color-foreground-rgb) / 0.25);
+    outline-offset: -2px;
+    color: rgb(var(--color-foreground-rgb) / 0.5);
+  }
+
+  .bcard--empty {
+    min-height: 150px;
+    width: 100%;
+  }
+
+  .bcard-content {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .bcard-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    font-size: 0.8125rem;
+    color: rgb(var(--color-foreground-rgb) / 0.7);
+  }
+
+  .bcard-excerpt {
+    margin: 0;
+    color: rgb(var(--color-foreground-rgb) / 0.8);
+  }
+{% endstylesheet %}

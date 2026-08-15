@@ -1,0 +1,407 @@
+{% liquid
+  assign inherit_color_scheme = block.settings.inherit_color_scheme
+  if inherit_color_scheme == false
+    assign scheme = block.settings.color_scheme
+  endif
+
+  assign show_arrows = false
+  if block.settings.icons_style != 'none'
+    assign show_arrows = true
+  endif
+
+  assign source = block.settings.source
+  assign blog = block.settings.blog
+  assign is_manual = false
+  if source == 'manual'
+    assign is_manual = true
+  endif
+
+  assign articles = blank
+%}
+{% if is_manual == false and blog != blank and blog.articles_count > 0 %}
+  {% paginate blog.articles by block.settings.article_limit %}
+    {% assign articles = blog.articles %}
+  {% endpaginate %}
+{% endif %}
+{% liquid
+  if is_manual
+    assign slide_count = block.blocks.size
+  else
+    assign slide_count = articles.size
+  endif
+
+  assign show_blog_hint = false
+  assign blog_hint_text = 'Select a blog'
+  if is_manual == false and request.design_mode
+    if blog == blank
+      assign show_blog_hint = true
+    elsif blog.articles_count == 0
+      assign show_blog_hint = true
+      assign blog_hint_text = 'This blog has no articles yet'
+    endif
+  endif
+
+  assign show_content = true
+  if slide_count == 0 and request.design_mode == false
+    assign show_content = false
+  endif
+%}
+{% style %}
+  #shopify-block-{{ block.id }} {
+    display: block;
+    --bcarousel-columns: {{ block.settings.columns }};
+    --bcarousel-mobile-columns: {{ block.settings.mobile_columns }};
+    --bcarousel-gap: {{ block.settings.columns_gap }}px;
+    {%- if inherit_color_scheme == false and scheme %}
+    {% render 'blk-scheme-vars', scheme: scheme %}
+    background-color: var(--color-background);
+    {%- endif %}
+    padding: {{ block.settings.padding_top }}px {{ block.settings.padding_right }}px {{ block.settings.padding_bottom }}px {{ block.settings.padding_left }}px;
+  }
+  @media screen and (max-width: 749px) {
+    #shopify-block-{{ block.id }} {
+      padding: {{ block.settings.padding_top_mobile }}px {{ block.settings.padding_right_mobile }}px {{ block.settings.padding_bottom_mobile }}px {{ block.settings.padding_left_mobile }}px;
+    }
+  }
+{% endstyle %}
+{% if show_blog_hint %}
+  <div class="bcarousel-empty-hint" {{ block.shopify_attributes }}>{{ blog_hint_text }}</div>
+{% elsif show_content %}
+  {% capture slides_html %}
+    {% if is_manual %}
+      {% content_for 'blocks' %}
+    {% else %}
+      {% for article in articles %}
+        <div class="bcarousel-slide">
+          {% render 'blk-blog-card',
+            article: article,
+            show_image: block.settings.show_image,
+            image_height: block.settings.image_height,
+            corner_radius: block.settings.card_corner_radius,
+            show_date: block.settings.show_date,
+            show_author: block.settings.show_author,
+            show_excerpt: block.settings.show_excerpt,
+            excerpt_words: block.settings.excerpt_words
+          %}
+        </div>
+      {% endfor %}
+    {% endif %}
+  {% endcapture %}
+  {% render 'slideshow',
+    class: 'bcarousel',
+    slides: slides_html,
+    show_arrows: show_arrows,
+    icon_style: block.settings.icons_style,
+    icon_shape: block.settings.icons_shape,
+    auto_hide_controls: false,
+    infinite: false,
+    initial_slide: 0,
+    slide_count: slide_count,
+    attributes: block.shopify_attributes
+  %}
+{% endif %}
+
+{% stylesheet %}
+  .bcarousel slideshow-slides {
+    gap: var(--bcarousel-gap, 12px);
+  }
+
+  .bcarousel-slide {
+    flex: 0 0 auto;
+    width: calc(
+      (100% - (var(--bcarousel-gap, 12px) * (var(--bcarousel-mobile-columns, 1) - 1))) /
+        var(--bcarousel-mobile-columns, 1)
+    );
+  }
+
+  @media screen and (min-width: 750px) {
+    .bcarousel-slide {
+      width: calc(
+        (100% - (var(--bcarousel-gap, 12px) * (var(--bcarousel-columns, 3) - 1))) / var(--bcarousel-columns, 3)
+      );
+    }
+  }
+
+  .bcarousel-empty-hint {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 150px;
+    outline: 2px dashed rgb(var(--color-foreground-rgb) / 0.25);
+    outline-offset: -2px;
+    color: rgb(var(--color-foreground-rgb) / 0.5);
+  }
+
+  .bcarousel .slideshow-control[disabled] {
+    display: none;
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Blog carousel",
+  "settings": [
+    {
+      "type": "select",
+      "id": "source",
+      "label": "Source",
+      "options": [
+        { "value": "blog", "label": "Blog (auto-populate)" },
+        { "value": "manual", "label": "Individual articles" }
+      ],
+      "default": "blog",
+      "info": "Blog pulls articles automatically. Individual articles lets you add Blog card blocks below and pick an article for each."
+    },
+    {
+      "type": "blog",
+      "id": "blog",
+      "label": "Blog",
+      "info": "Only used when Source is set to Blog"
+    },
+    {
+      "type": "range",
+      "id": "article_limit",
+      "label": "Articles to show",
+      "min": 2,
+      "max": 20,
+      "step": 1,
+      "default": 8,
+      "visible_if": "{{ block.settings.source == 'blog' }}"
+    },
+    {
+      "type": "header",
+      "content": "Card",
+      "visible_if": "{{ block.settings.source == 'blog' }}"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_image",
+      "label": "Show image",
+      "default": true,
+      "visible_if": "{{ block.settings.source == 'blog' }}"
+    },
+    {
+      "type": "select",
+      "id": "image_height",
+      "label": "Image height",
+      "options": [
+        { "value": "small", "label": "Small" },
+        { "value": "medium", "label": "Medium" },
+        { "value": "large", "label": "Large" }
+      ],
+      "default": "medium",
+      "visible_if": "{{ block.settings.source == 'blog' and block.settings.show_image }}"
+    },
+    {
+      "type": "range",
+      "id": "card_corner_radius",
+      "label": "Image corner radius",
+      "min": 0,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "default": 0,
+      "visible_if": "{{ block.settings.source == 'blog' and block.settings.show_image }}"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_date",
+      "label": "Show date",
+      "default": true,
+      "visible_if": "{{ block.settings.source == 'blog' }}"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_author",
+      "label": "Show author",
+      "default": true,
+      "visible_if": "{{ block.settings.source == 'blog' }}"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_excerpt",
+      "label": "Show excerpt",
+      "default": true,
+      "visible_if": "{{ block.settings.source == 'blog' }}"
+    },
+    {
+      "type": "range",
+      "id": "excerpt_words",
+      "label": "Excerpt length",
+      "min": 5,
+      "max": 60,
+      "step": 5,
+      "default": 20,
+      "visible_if": "{{ block.settings.source == 'blog' and block.settings.show_excerpt }}"
+    },
+    {
+      "type": "header",
+      "content": "Appearance"
+    },
+    {
+      "type": "checkbox",
+      "id": "inherit_color_scheme",
+      "label": "Inherit color scheme",
+      "default": true
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "scheme-1",
+      "visible_if": "{{ block.settings.inherit_color_scheme == false }}"
+    },
+    {
+      "type": "header",
+      "content": "Desktop settings"
+    },
+    {
+      "type": "range",
+      "id": "columns",
+      "label": "Columns",
+      "min": 1,
+      "max": 6,
+      "step": 1,
+      "default": 3
+    },
+    {
+      "type": "range",
+      "id": "columns_gap",
+      "label": "Gap between cards",
+      "min": 0,
+      "max": 60,
+      "step": 2,
+      "unit": "px",
+      "default": 12
+    },
+    {
+      "type": "select",
+      "id": "icons_style",
+      "label": "Navigation icon",
+      "options": [
+        { "value": "arrow", "label": "Arrows" },
+        { "value": "chevron", "label": "Chevrons" },
+        { "value": "arrows_large", "label": "Arrows (large)" },
+        { "value": "chevron_large", "label": "Chevrons (large)" },
+        { "value": "none", "label": "None" }
+      ],
+      "default": "arrow"
+    },
+    {
+      "type": "select",
+      "id": "icons_shape",
+      "label": "Navigation icon background",
+      "options": [
+        { "value": "none", "label": "None" },
+        { "value": "circle", "label": "Circle" },
+        { "value": "square", "label": "Square" }
+      ],
+      "default": "none",
+      "visible_if": "{{ block.settings.icons_style != 'none' }}"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Padding top",
+      "min": 0,
+      "max": 100,
+      "step": 2,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Padding bottom",
+      "min": 0,
+      "max": 100,
+      "step": 2,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding_left",
+      "label": "Padding left",
+      "min": 0,
+      "max": 100,
+      "step": 2,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding_right",
+      "label": "Padding right",
+      "min": 0,
+      "max": 100,
+      "step": 2,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "header",
+      "content": "Mobile settings"
+    },
+    {
+      "type": "select",
+      "id": "mobile_columns",
+      "label": "Columns",
+      "options": [
+        { "value": "1", "label": "1" },
+        { "value": "2", "label": "2" }
+      ],
+      "default": "1"
+    },
+    {
+      "type": "range",
+      "id": "padding_top_mobile",
+      "label": "Padding top",
+      "min": 0,
+      "max": 100,
+      "step": 2,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_mobile",
+      "label": "Padding bottom",
+      "min": 0,
+      "max": 100,
+      "step": 2,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding_left_mobile",
+      "label": "Padding left",
+      "min": 0,
+      "max": 100,
+      "step": 2,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding_right_mobile",
+      "label": "Padding right",
+      "min": 0,
+      "max": 100,
+      "step": 2,
+      "unit": "px",
+      "default": 0
+    }
+  ],
+  "blocks": [
+    { "type": "blk_blog-card" }
+  ],
+  "presets": [
+    {
+      "name": "Blog carousel",
+      "category": "Custom blocks"
+    }
+  ]
+}
+{% endschema %}

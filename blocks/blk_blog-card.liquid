@@ -1,0 +1,110 @@
+{% liquid
+  assign article = block.settings.article
+%}
+{% style %}
+  #shopify-block-{{ block.id }} {
+    flex: 0 0 auto;
+    width: calc(
+      (100% - (var(--bcarousel-gap, 12px) * (var(--bcarousel-mobile-columns, 1) - 1))) /
+        var(--bcarousel-mobile-columns, 1)
+    );
+  }
+  @media screen and (min-width: 750px) {
+    #shopify-block-{{ block.id }} {
+      width: calc(
+        (100% - (var(--bcarousel-gap, 12px) * (var(--bcarousel-columns, 3) - 1))) / var(--bcarousel-columns, 3)
+      );
+    }
+  }
+{% endstyle %}
+{% render 'blk-blog-card',
+  article: article,
+  show_image: block.settings.show_image,
+  image_height: block.settings.image_height,
+  corner_radius: block.settings.corner_radius,
+  show_date: block.settings.show_date,
+  show_author: block.settings.show_author,
+  show_excerpt: block.settings.show_excerpt,
+  excerpt_words: block.settings.excerpt_words,
+  attributes: block.shopify_attributes
+%}
+
+{% schema %}
+{
+  "name": "Blog card",
+  "settings": [
+    {
+      "type": "article",
+      "id": "article",
+      "label": "Article"
+    },
+    {
+      "type": "header",
+      "content": "Card"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_image",
+      "label": "Show image",
+      "default": true
+    },
+    {
+      "type": "select",
+      "id": "image_height",
+      "label": "Image height",
+      "options": [
+        { "value": "small", "label": "Small" },
+        { "value": "medium", "label": "Medium" },
+        { "value": "large", "label": "Large" }
+      ],
+      "default": "medium",
+      "visible_if": "{{ block.settings.show_image }}"
+    },
+    {
+      "type": "range",
+      "id": "corner_radius",
+      "label": "Image corner radius",
+      "min": 0,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "default": 0,
+      "visible_if": "{{ block.settings.show_image }}"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_date",
+      "label": "Show date",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_author",
+      "label": "Show author",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_excerpt",
+      "label": "Show excerpt",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "excerpt_words",
+      "label": "Excerpt length",
+      "min": 5,
+      "max": 60,
+      "step": 5,
+      "default": 20,
+      "visible_if": "{{ block.settings.show_excerpt }}"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Blog card",
+      "category": "Custom blocks"
+    }
+  ]
+}
+{% endschema %}
