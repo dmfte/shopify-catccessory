@@ -1,5 +1,3 @@
-
-
 {% liquid
   assign block_settings = block.settings
   assign menu = block_settings.menu
@@ -10,6 +8,14 @@
     assign dividers_enabled = true
   endif
 %}
+
+{% style %}
+  {% if block_settings.link_preset == 'paragraph' %}
+    #shopify-block-{{ block.id }} .menu__item.paragraph a {
+      --font-paragraph--size: {{ block.settings.link_font_size }}px;
+    }
+  {% endif %}
+{% endstyle %}
 
 {% if menu != blank or heading != blank %}
   {%- liquid
@@ -61,6 +67,7 @@
       </summary>
 
       <nav
+        id="shopify-block-{{ block.id }}"
         class="details-content"
         {% if heading == blank %}
           aria-label="{{ menu.title | escape }}"
@@ -304,6 +311,17 @@
         }
       ],
       "default": "paragraph"
+    },
+    {
+      "type": "range",
+      "id": "link_font_size",
+      "label": "t:settings.size",
+      "min": 8,
+      "max": 32,
+      "step": 1,
+      "unit": "px",
+      "default": 16,
+      "visible_if": "{{ block.settings.link_preset == 'paragraph' }}"
     },
     {
       "type": "header",
