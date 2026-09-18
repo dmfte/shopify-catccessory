@@ -13,7 +13,11 @@
   assign font_size_tags = 'p,h1,h2,h3,h4,h5,h6' | split: ','
 %}
 {% style %}
+  :root {
+    --color-brand-primary: {{ block.settings.font_color }};
+  }
   #shopify-block-{{ block.id }} {
+    color: var(--color-brand-primary);
     {% if block.settings.full_width %}
         width: 100%;
         text-align: {{ block.settings.alignment }};
@@ -105,6 +109,13 @@
       ],
       "default": "paragraph",
       "info": "Eyebrow text is uppercase with wide letter spacing. Override its size with the <p> font size settings below"
+    },
+    {
+      "type": "color",
+      "id": "font_color",
+      "label": "Font color",
+      "default": "#5A6E3C",
+      "info": "Sets the sitewide --color-brand-primary variable"
     },
     {
       "type": "header",
