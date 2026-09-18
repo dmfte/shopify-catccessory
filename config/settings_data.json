@@ -81,8 +81,8 @@
       "scheme-1": {
         "settings": {
           "background": "rgba(0,0,0,0)",
-          "foreground_heading": "#2f3a20",
-          "foreground": "#2f3a20cf",
+          "foreground_heading": "#38412CCF",
+          "foreground": "#38412CCF",
           "primary": "#2f3a20cf",
           "primary_hover": "#2f3a20",
           "border": "#0000000f",
@@ -91,7 +91,7 @@
           "primary_button_text": "#ffffff",
           "primary_button_border": "#799450",
           "primary_button_hover_background": "#799450",
-          "primary_button_hover_text": "#000000",
+          "primary_button_hover_text": "#FFFFFF",
           "primary_button_hover_border": "#5a6e3c",
           "secondary_button_background": "#7b8b63",
           "secondary_button_text": "#ffffff",

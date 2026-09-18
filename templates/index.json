@@ -213,6 +213,7 @@
                           "settings": {
                             "richtext": "<p>WHISKER ATELIER</p>",
                             "p_style": "eyebrow",
+                            "font_color": "#5a6e3c",
                             "font_size_p": 0,
                             "font_size_h1": 0,
                             "font_size_h2": 0,
@@ -248,6 +249,7 @@
                           "settings": {
                             "richtext": "<h1>Comfort, Curated for Cats</h1>",
                             "p_style": "paragraph",
+                            "font_color": "#5a6e3c",
                             "font_size_p": 0,
                             "font_size_h1": 0,
                             "font_size_h2": 0,
@@ -283,6 +285,7 @@
                           "settings": {
                             "richtext": "<p>Conscious materials. Timeless design. Everything your cat needs, nothing they don't.</p>",
                             "p_style": "paragraph",
+                            "font_color": "#5a6e3c",
                             "font_size_p": 0,
                             "font_size_h1": 0,
                             "font_size_h2": 0,
@@ -470,7 +473,7 @@
       "block_order": [
         "blk_flex_row_aNFWV9"
       ],
-      "name": "Theme-blocks section",
+      "name": "Super cat",
       "settings": {
         "full_width": true
       }
@@ -520,6 +523,7 @@
               "settings": {
                 "richtext": "<h3>BEST SELLERS</h3>",
                 "p_style": "paragraph",
+                "font_color": "#5a6e3c",
                 "font_size_p": 0,
                 "font_size_h1": 0,
                 "font_size_h2": 0,
@@ -726,7 +730,7 @@
       "block_order": [
         "blk_flex_col_XabJBp"
       ],
-      "name": "Theme-blocks section",
+      "name": "Best sellers",
       "settings": {
         "full_width": false
       }
@@ -854,6 +858,7 @@
                       "settings": {
                         "richtext": "<h1>Our Philosophy: Curated. Conscious. Timeless.</h1>",
                         "p_style": "paragraph",
+                        "font_color": "#5a6e3c",
                         "font_size_p": 0,
                         "font_size_h1": 0,
                         "font_size_h2": 0,
@@ -1078,6 +1083,7 @@
                               "settings": {
                                 "richtext": "<h2>Our Philosophy: Curated. Conscious. Timeless.</h2>",
                                 "p_style": "paragraph",
+                                "font_color": "#5a6e3c",
                                 "font_size_p": 0,
                                 "font_size_h1": 0,
                                 "font_size_h2": 0,
@@ -1118,6 +1124,7 @@
                           "settings": {
                             "richtext": "<p>At Catcessory, we believe that every detail of your feline friend’s life deserves to be exceptional. Our carefully curated collection of cat essentials is designed to blend seamlessly into your home while providing unmatched comfort and function.</p>",
                             "p_style": "paragraph",
+                            "font_color": "#5a6e3c",
                             "font_size_p": 0,
                             "font_size_h1": 0,
                             "font_size_h2": 0,
@@ -1153,6 +1160,7 @@
                           "settings": {
                             "richtext": "<p>From thoughtfully crafted knitwear to artisan-grade scratching surfaces, each piece is a testament to our commitment to conscious sourcing and timeless design. We seek to elevate the everyday, turning essential items into artful accents that both you and your cat will cherish.</p>",
                             "p_style": "paragraph",
+                            "font_color": "#5a6e3c",
                             "font_size_p": 0,
                             "font_size_h1": 0,
                             "font_size_h2": 0,
@@ -1362,6 +1370,7 @@
                       "settings": {
                         "richtext": "<h1>Our Money-Back Guarantee</h1>",
                         "p_style": "paragraph",
+                        "font_color": "#5a6e3c",
                         "font_size_p": 0,
                         "font_size_h1": 0,
                         "font_size_h2": 0,
@@ -1510,6 +1519,7 @@
                               "settings": {
                                 "richtext": "<h2>Our Money-Back Guarantee</h2>",
                                 "p_style": "paragraph",
+                                "font_color": "#5a6e3c",
                                 "font_size_p": 0,
                                 "font_size_h1": 0,
                                 "font_size_h2": 0,
@@ -1550,6 +1560,7 @@
                           "settings": {
                             "richtext": "<p>We stand behind every stitch. If your cat isn't obsessed with their new gear, send it back within 30 days for a full refund — no questions asked.</p>",
                             "p_style": "paragraph",
+                            "font_color": "#5a6e3c",
                             "font_size_p": 0,
                             "font_size_h1": 0,
                             "font_size_h2": 0,
@@ -1585,6 +1596,7 @@
                           "settings": {
                             "richtext": "<p>Quality you can trust, backed by a promise: shop with confidence knowing your satisfaction — and your cat's — is always guaranteed.</p>",
                             "p_style": "paragraph",
+                            "font_color": "#5a6e3c",
                             "font_size_p": 0,
                             "font_size_h1": 0,
                             "font_size_h2": 0,
@@ -1745,12 +1757,524 @@
       "settings": {
         "full_width": true
       }
+    },
+    "theme_blocks_Ms7rYq2": {
+      "type": "theme_blocks",
+      "blocks": {
+        "blk_flex_row_Ms1Cntr": {
+          "type": "blk_flex-row",
+          "name": "To center",
+          "settings": {
+            "inherit_color_scheme": true,
+            "color_scheme": "",
+            "show_desktop": true,
+            "show_mobile": true,
+            "anchor_id": "",
+            "anchor_offset": 0,
+            "gap": 0,
+            "horizontal_alignment": "center",
+            "vertical_alignment": "stretch",
+            "wrap": false,
+            "width": "fill",
+            "custom_width": "100%",
+            "max_width": "",
+            "min_width": "",
+            "min_height": 0,
+            "corner_radius": 0,
+            "padding_top": 0,
+            "padding_bottom": 0,
+            "padding_left": 0,
+            "padding_right": 0,
+            "stack_mobile": true,
+            "reverse_mobile": false,
+            "gap_mobile": 0,
+            "horizontal_alignment_mobile": "left",
+            "vertical_alignment_mobile": "top",
+            "width_mobile": "default",
+            "custom_width_mobile": "",
+            "max_width_mobile": "",
+            "min_width_mobile": "",
+            "padding_top_mobile": 36,
+            "padding_bottom_mobile": 36,
+            "padding_left_mobile": 0,
+            "padding_right_mobile": 0
+          },
+          "blocks": {
+            "blk_flex_row_Ms2MaxW": {
+              "type": "blk_flex-row",
+              "name": "Max width",
+              "settings": {
+                "inherit_color_scheme": true,
+                "color_scheme": "",
+                "show_desktop": true,
+                "show_mobile": true,
+                "anchor_id": "",
+                "anchor_offset": 0,
+                "gap": 0,
+                "horizontal_alignment": "center",
+                "vertical_alignment": "middle",
+                "wrap": false,
+                "width": "fill",
+                "custom_width": "",
+                "max_width": "1400px",
+                "min_width": "",
+                "min_height": 0,
+                "corner_radius": 0,
+                "padding_top": 100,
+                "padding_bottom": 100,
+                "padding_left": 0,
+                "padding_right": 0,
+                "stack_mobile": true,
+                "reverse_mobile": false,
+                "gap_mobile": 24,
+                "horizontal_alignment_mobile": "stretch",
+                "vertical_alignment_mobile": "top",
+                "width_mobile": "custom",
+                "custom_width_mobile": "100%",
+                "max_width_mobile": "",
+                "min_width_mobile": "",
+                "padding_top_mobile": 0,
+                "padding_bottom_mobile": 0,
+                "padding_left_mobile": 0,
+                "padding_right_mobile": 0
+              },
+              "blocks": {
+                "blk_flex_col_Ms3TtlM": {
+                  "type": "blk_flex-col",
+                  "name": "Title wrapper (mobile only)",
+                  "settings": {
+                    "inherit_color_scheme": true,
+                    "color_scheme": "",
+                    "show_desktop": false,
+                    "show_mobile": true,
+                    "anchor_id": "",
+                    "anchor_offset": 0,
+                    "gap": 0,
+                    "horizontal_alignment": "stretch",
+                    "vertical_alignment": "top",
+                    "width": "fill",
+                    "custom_width": "",
+                    "max_width": "",
+                    "min_width": "",
+                    "min_height": 0,
+                    "corner_radius": 0,
+                    "padding_top": 0,
+                    "padding_bottom": 0,
+                    "padding_left": 0,
+                    "padding_right": 0,
+                    "gap_mobile": 0,
+                    "horizontal_alignment_mobile": "stretch",
+                    "vertical_alignment_mobile": "top",
+                    "width_mobile": "fill",
+                    "custom_width_mobile": "",
+                    "max_width_mobile": "",
+                    "min_width_mobile": "",
+                    "padding_top_mobile": 0,
+                    "padding_bottom_mobile": 0,
+                    "padding_left_mobile": 0,
+                    "padding_right_mobile": 0
+                  },
+                  "blocks": {
+                    "blk_richtext_Ms5TtlM": {
+                      "type": "blk_richtext",
+                      "name": "Title (mobile)",
+                      "settings": {
+                        "richtext": "<h1>Every Stitch Has a Story</h1>",
+                        "p_style": "paragraph",
+                        "font_color": "#5a6e3c",
+                        "font_size_p": 0,
+                        "font_size_h1": 0,
+                        "font_size_h2": 0,
+                        "font_size_h3": 0,
+                        "font_size_h4": 0,
+                        "font_size_h5": 0,
+                        "font_size_h6": 0,
+                        "full_width": true,
+                        "alignment": "left",
+                        "padding_top": 0,
+                        "padding_bottom": 0,
+                        "padding_left": 0,
+                        "padding_right": 0,
+                        "full_width_mobile": "default",
+                        "alignment_mobile": "default",
+                        "font_size_p_mobile": 0,
+                        "font_size_h1_mobile": 0,
+                        "font_size_h2_mobile": 0,
+                        "font_size_h3_mobile": 0,
+                        "font_size_h4_mobile": 0,
+                        "font_size_h5_mobile": 0,
+                        "font_size_h6_mobile": 0,
+                        "padding_top_mobile": 40,
+                        "padding_bottom_mobile": 20,
+                        "padding_left_mobile": 24,
+                        "padding_right_mobile": 24
+                      },
+                      "blocks": {}
+                    }
+                  },
+                  "block_order": [
+                    "blk_richtext_Ms5TtlM"
+                  ]
+                },
+                "blk_flex_col_Ms6ImgS": {
+                  "type": "blk_flex-col",
+                  "name": "Image side",
+                  "settings": {
+                    "inherit_color_scheme": true,
+                    "color_scheme": "",
+                    "show_desktop": true,
+                    "show_mobile": true,
+                    "anchor_id": "",
+                    "anchor_offset": 0,
+                    "gap": 16,
+                    "horizontal_alignment": "stretch",
+                    "vertical_alignment": "top",
+                    "width": "custom",
+                    "custom_width": "100%",
+                    "max_width": "50%",
+                    "min_width": "",
+                    "min_height": 0,
+                    "corner_radius": 0,
+                    "padding_top": 0,
+                    "padding_bottom": 0,
+                    "padding_left": 0,
+                    "padding_right": 0,
+                    "gap_mobile": 16,
+                    "horizontal_alignment_mobile": "stretch",
+                    "vertical_alignment_mobile": "top",
+                    "width_mobile": "custom",
+                    "custom_width_mobile": "100%",
+                    "max_width_mobile": "",
+                    "min_width_mobile": "100%",
+                    "padding_top_mobile": 0,
+                    "padding_bottom_mobile": 0,
+                    "padding_left_mobile": 0,
+                    "padding_right_mobile": 0
+                  },
+                  "blocks": {
+                    "blk_image_Ms7Img01": {
+                      "type": "blk_image",
+                      "name": "Meow story image",
+                      "settings": {
+                        "image": "shopify://shop_images/Cat_sleeping.jpg",
+                        "alt": "",
+                        "link": "",
+                        "open_in_new_tab": false,
+                        "object_fit": "cover",
+                        "object_position": "center",
+                        "prioritize": false,
+                        "show_desktop": true,
+                        "show_mobile": true,
+                        "width": "fill",
+                        "custom_width": "",
+                        "max_width": "",
+                        "min_width": "",
+                        "min_height": 0,
+                        "corner_radius": 0,
+                        "padding_top": 0,
+                        "padding_bottom": 0,
+                        "padding_left": 0,
+                        "padding_right": 0,
+                        "width_mobile": "custom",
+                        "custom_width_mobile": "100%",
+                        "max_width_mobile": "",
+                        "min_width_mobile": "",
+                        "padding_top_mobile": 0,
+                        "padding_bottom_mobile": 0,
+                        "padding_left_mobile": 0,
+                        "padding_right_mobile": 0
+                      },
+                      "blocks": {}
+                    }
+                  },
+                  "block_order": [
+                    "blk_image_Ms7Img01"
+                  ]
+                },
+                "blk_flex_col_Ms9TxtS": {
+                  "type": "blk_flex-col",
+                  "name": "Text side",
+                  "settings": {
+                    "inherit_color_scheme": true,
+                    "color_scheme": "",
+                    "show_desktop": true,
+                    "show_mobile": true,
+                    "anchor_id": "",
+                    "anchor_offset": 0,
+                    "gap": 0,
+                    "horizontal_alignment": "stretch",
+                    "vertical_alignment": "top",
+                    "width": "custom",
+                    "custom_width": "100%",
+                    "max_width": "50%",
+                    "min_width": "",
+                    "min_height": 0,
+                    "corner_radius": 0,
+                    "padding_top": 0,
+                    "padding_bottom": 0,
+                    "padding_left": 0,
+                    "padding_right": 0,
+                    "gap_mobile": 20,
+                    "horizontal_alignment_mobile": "stretch",
+                    "vertical_alignment_mobile": "top",
+                    "width_mobile": "custom",
+                    "custom_width_mobile": "100%",
+                    "max_width_mobile": "",
+                    "min_width_mobile": "100%",
+                    "padding_top_mobile": 0,
+                    "padding_bottom_mobile": 0,
+                    "padding_left_mobile": 25,
+                    "padding_right_mobile": 25
+                  },
+                  "blocks": {
+                    "blk_flex_col_MsATxtSt": {
+                      "type": "blk_flex-col",
+                      "name": "Text stack",
+                      "settings": {
+                        "inherit_color_scheme": true,
+                        "color_scheme": "",
+                        "show_desktop": true,
+                        "show_mobile": true,
+                        "anchor_id": "",
+                        "anchor_offset": 0,
+                        "gap": 24,
+                        "horizontal_alignment": "left",
+                        "vertical_alignment": "top",
+                        "width": "custom",
+                        "custom_width": "600px",
+                        "max_width": "",
+                        "min_width": "",
+                        "min_height": 0,
+                        "corner_radius": 0,
+                        "padding_top": 0,
+                        "padding_bottom": 0,
+                        "padding_left": 48,
+                        "padding_right": 0,
+                        "gap_mobile": 12,
+                        "horizontal_alignment_mobile": "center",
+                        "vertical_alignment_mobile": "top",
+                        "width_mobile": "custom",
+                        "custom_width_mobile": "",
+                        "max_width_mobile": "100%",
+                        "min_width_mobile": "",
+                        "padding_top_mobile": 0,
+                        "padding_bottom_mobile": 0,
+                        "padding_left_mobile": 0,
+                        "padding_right_mobile": 0
+                      },
+                      "blocks": {
+                        "blk_flex_col_MsBTtlD": {
+                          "type": "blk_flex-col",
+                          "name": "Title wrapper (desktop only)",
+                          "settings": {
+                            "inherit_color_scheme": true,
+                            "color_scheme": "",
+                            "show_desktop": true,
+                            "show_mobile": false,
+                            "anchor_id": "",
+                            "anchor_offset": 0,
+                            "gap": 0,
+                            "horizontal_alignment": "stretch",
+                            "vertical_alignment": "top",
+                            "width": "fill",
+                            "custom_width": "",
+                            "max_width": "",
+                            "min_width": "",
+                            "min_height": 0,
+                            "corner_radius": 0,
+                            "padding_top": 0,
+                            "padding_bottom": 0,
+                            "padding_left": 0,
+                            "padding_right": 0,
+                            "gap_mobile": 0,
+                            "horizontal_alignment_mobile": "stretch",
+                            "vertical_alignment_mobile": "top",
+                            "width_mobile": "fill",
+                            "custom_width_mobile": "",
+                            "max_width_mobile": "",
+                            "min_width_mobile": "",
+                            "padding_top_mobile": 0,
+                            "padding_bottom_mobile": 0,
+                            "padding_left_mobile": 0,
+                            "padding_right_mobile": 0
+                          },
+                          "blocks": {
+                            "blk_richtext_MsCEybD": {
+                              "type": "blk_richtext",
+                              "name": "Eyebrow (desktop)",
+                              "settings": {
+                                "richtext": "<p>OUR STORY</p>",
+                                "p_style": "eyebrow",
+                                "font_color": "#5a6e3c",
+                                "font_size_p": 0,
+                                "font_size_h1": 0,
+                                "font_size_h2": 0,
+                                "font_size_h3": 0,
+                                "font_size_h4": 0,
+                                "font_size_h5": 0,
+                                "font_size_h6": 0,
+                                "full_width": true,
+                                "alignment": "left",
+                                "padding_top": 0,
+                                "padding_bottom": 0,
+                                "padding_left": 0,
+                                "padding_right": 0,
+                                "full_width_mobile": "default",
+                                "alignment_mobile": "default",
+                                "font_size_p_mobile": 0,
+                                "font_size_h1_mobile": 0,
+                                "font_size_h2_mobile": 0,
+                                "font_size_h3_mobile": 0,
+                                "font_size_h4_mobile": 0,
+                                "font_size_h5_mobile": 0,
+                                "font_size_h6_mobile": 0,
+                                "padding_top_mobile": 0,
+                                "padding_bottom_mobile": 0,
+                                "padding_left_mobile": 0,
+                                "padding_right_mobile": 0
+                              },
+                              "blocks": {}
+                            },
+                            "blk_richtext_MsDTtlD": {
+                              "type": "blk_richtext",
+                              "name": "Title (desktop)",
+                              "settings": {
+                                "richtext": "<h2>Every Stitch Has a Story</h2>",
+                                "p_style": "paragraph",
+                                "font_color": "#5a6e3c",
+                                "font_size_p": 0,
+                                "font_size_h1": 0,
+                                "font_size_h2": 0,
+                                "font_size_h3": 0,
+                                "font_size_h4": 0,
+                                "font_size_h5": 0,
+                                "font_size_h6": 0,
+                                "full_width": true,
+                                "alignment": "left",
+                                "padding_top": 0,
+                                "padding_bottom": 0,
+                                "padding_left": 0,
+                                "padding_right": 0,
+                                "full_width_mobile": "default",
+                                "alignment_mobile": "default",
+                                "font_size_p_mobile": 0,
+                                "font_size_h1_mobile": 0,
+                                "font_size_h2_mobile": 0,
+                                "font_size_h3_mobile": 0,
+                                "font_size_h4_mobile": 0,
+                                "font_size_h5_mobile": 0,
+                                "font_size_h6_mobile": 0,
+                                "padding_top_mobile": 0,
+                                "padding_bottom_mobile": 0,
+                                "padding_left_mobile": 0,
+                                "padding_right_mobile": 0
+                              },
+                              "blocks": {}
+                            }
+                          },
+                          "block_order": [
+                            "blk_richtext_MsCEybD",
+                            "blk_richtext_MsDTtlD"
+                          ]
+                        },
+                        "blk_richtext_MsEPara1": {
+                          "type": "blk_richtext",
+                          "name": "Paragraph 1",
+                          "settings": {
+                            "richtext": "<p>It started with one rescue cat, a sewing needle, and zero patience for anything scratchy or generic. Discover how Mochi's very particular standards became the heart of everything we make — from the first hand-sewn collar to the studio we call home today.</p>",
+                            "p_style": "paragraph",
+                            "font_color": "#5a6e3c",
+                            "font_size_p": 0,
+                            "font_size_h1": 0,
+                            "font_size_h2": 0,
+                            "font_size_h3": 0,
+                            "font_size_h4": 0,
+                            "font_size_h5": 0,
+                            "font_size_h6": 0,
+                            "full_width": true,
+                            "alignment": "left",
+                            "padding_top": 0,
+                            "padding_bottom": 0,
+                            "padding_left": 0,
+                            "padding_right": 0,
+                            "full_width_mobile": "default",
+                            "alignment_mobile": "default",
+                            "font_size_p_mobile": 0,
+                            "font_size_h1_mobile": 0,
+                            "font_size_h2_mobile": 0,
+                            "font_size_h3_mobile": 0,
+                            "font_size_h4_mobile": 0,
+                            "font_size_h5_mobile": 0,
+                            "font_size_h6_mobile": 0,
+                            "padding_top_mobile": 0,
+                            "padding_bottom_mobile": 0,
+                            "padding_left_mobile": 0,
+                            "padding_right_mobile": 0
+                          },
+                          "blocks": {}
+                        },
+                        "blk_button_cat_MsFBtn": {
+                          "type": "blk_button-cat",
+                          "name": "Cat button",
+                          "settings": {
+                            "label": "READ OUR STORY",
+                            "link": "/pages/meow-story",
+                            "open_in_new_tab": false,
+                            "width": "260px",
+                            "alignment": "left",
+                            "style": "primary",
+                            "font_size": 12,
+                            "animate_tail": true,
+                            "padding_top": 0,
+                            "padding_bottom": 0,
+                            "padding_left": 0,
+                            "padding_right": 0,
+                            "padding_top_mobile": 0,
+                            "padding_bottom_mobile": 0,
+                            "padding_left_mobile": 0,
+                            "padding_right_mobile": 0
+                          },
+                          "blocks": {}
+                        }
+                      },
+                      "block_order": [
+                        "blk_flex_col_MsBTtlD",
+                        "blk_richtext_MsEPara1",
+                        "blk_button_cat_MsFBtn"
+                      ]
+                    }
+                  },
+                  "block_order": [
+                    "blk_flex_col_MsATxtSt"
+                  ]
+                }
+              },
+              "block_order": [
+                "blk_flex_col_Ms3TtlM",
+                "blk_flex_col_Ms6ImgS",
+                "blk_flex_col_Ms9TxtS"
+              ]
+            }
+          },
+          "block_order": [
+            "blk_flex_row_Ms2MaxW"
+          ]
+        }
+      },
+      "block_order": [
+        "blk_flex_row_Ms1Cntr"
+      ],
+      "name": "Our Meow Story",
+      "settings": {
+        "full_width": true
+      }
     }
   },
   "order": [
     "theme_blocks_nc3irN",
     "theme_blocks_K9BjM9",
     "theme_blocks_dUgdQp",
-    "theme_blocks_Gd4Rnt1"
+    "theme_blocks_Gd4Rnt1",
+    "theme_blocks_Ms7rYq2"
   ]
 }
