@@ -1,6 +1,15 @@
-
-
 {% assign block_settings = block.settings %}
+{%- comment -%}
+  The cat border style reuses the underline layout; it only swaps the underline for the cat shape.
+{%- endcomment -%}
+{% liquid
+  assign border_style = block_settings.border_style
+  assign is_cat = false
+  if border_style == 'cat'
+    assign border_style = 'underline'
+    assign is_cat = true
+  endif
+%}
 <div
   class="email-signup-block size-style spacing-style"
   style="{% render 'size-style', settings: block_settings %}{% render 'spacing-style', settings: block_settings %}"
@@ -13,9 +22,12 @@
   {% endif %}
   {%- form 'customer', class: 'email-signup__form spacing-style' %}
     <div
-      class="email-signup__input-group {% if block_settings.integrated_button and block_settings.border_style != 'underline' %}email-signup__input-group--integrated{% endif %} {% if block_settings.border_style == 'underline' %}email-signup__input-group--underline{% endif %} {% if block_settings.border_style == 'none' %}email-signup__input-group--no-border{% endif %} {% if block_settings.display_type == 'arrow' %}email-signup__input-group--arrow{% endif %} {% if block_settings.inherit_color_scheme == false %}color-{{ block_settings.color_scheme }}{% endif %}"
+      class="email-signup__input-group {% if block_settings.integrated_button and border_style != 'underline' %}email-signup__input-group--integrated{% endif %} {% if border_style == 'underline' %}email-signup__input-group--underline{% endif %} {% if is_cat %}email-signup__input-group--cat{% endif %} {% if border_style == 'none' %}email-signup__input-group--no-border{% endif %} {% if block_settings.display_type == 'arrow' %}email-signup__input-group--arrow{% endif %} {% if block_settings.inherit_color_scheme == false %}color-{{ block_settings.color_scheme }}{% endif %}"
       style="--border-width: {{ block_settings.border_width }}px; --border-radius: {{ block_settings.border_radius }}px;"
     >
+      {%- if is_cat -%}
+        <span class="email-signup__cat" aria-hidden="true"></span>
+      {%- endif -%}
       <label
         for="EmailInput-{{ block.id }}"
         class="visually-hidden"
@@ -24,7 +36,7 @@
       </label>
       <input
         id="EmailInput-{{ block.id }}"
-        class="email-signup__input email-signup__input--{{ block_settings.border_style }} {{ block_settings.input_type_preset }} {{ block_settings.border_variation }}"
+        class="email-signup__input email-signup__input--{{ border_style }} {{ block_settings.input_type_preset }} {{ block_settings.border_variation }}"
         type="email"
         name="contact[email]"
         autocorrect="off"
@@ -41,7 +53,7 @@
         {% endif %}
       >
       <button
-        class="email-signup__button {% if block_settings.integrated_button or block_settings.border_style == 'underline' %}email-signup__button--integrated{% endif %} email-signup__button--{{ block_settings.display_type }} {{ block_settings.button_type_preset }} {{ block_settings.style_class }} {{ block_settings.style_class }}--{{ block.id }} {% if block_settings.inherit_color_scheme == false %}color-{{ block_settings.color_scheme }}{% endif %}"
+        class="email-signup__button {% if block_settings.integrated_button or border_style == 'underline' %}email-signup__button--integrated{% endif %} email-signup__button--{{ block_settings.display_type }} {{ block_settings.button_type_preset }} {{ block_settings.style_class }} {{ block_settings.style_class }}--{{ block.id }} {% if block_settings.inherit_color_scheme == false %}color-{{ block_settings.color_scheme }}{% endif %}"
         {% if block_settings.display_type != 'text' %}
           aria-label="{{ 'actions.sign_up' | t }}"
         {% endif %}
@@ -215,6 +227,70 @@
 
     &:focus-visible {
       outline: none;
+    }
+  }
+
+  .email-signup__input-group--cat {
+    --cat-color: var(--color-input-border);
+
+    position: relative;
+    box-sizing: border-box;
+    height: 52px;
+    padding: 0 0 6px 40px;
+    margin-block-end: 0;
+    box-shadow: none;
+
+    &:focus-within {
+      --cat-color: var(--color-input-text);
+    }
+
+    & .email-signup__cat {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background-color: var(--cat-color);
+      transition: background-color var(--animation-values);
+      clip-path: shape(
+        from 25px 13px,
+        curve to 18px 5px with 24px 8px / 24px 6px,
+        line to 18px 5px,
+        line to 16px 2px,
+        line to 14px 6px,
+        curve to 9px 17px with 9px 8px / 10px 11px,
+        curve to 4px 37px with 6px 22px / 2px 24px,
+        curve to 11px 49px with 1px 39px / 2px 49px,
+        hline to 23px,
+        curve to 26px 34px with 30px 49px / 33px 35px,
+        curve to 22px 21px with 26px 29px / 25px 25px,
+        curve to 27px 14px with 26px 19px / 27px 17px,
+        line to 25px 13px,
+        move to 22px 6px,
+        line to 21px 3px,
+        line to 18px 5px,
+        move to 16px 46px,
+        curve to 28px 52px with 18px 50px / 21px 52px,
+        hline by calc(100% - 30px),
+        arc by 0px -4px of 1px ccw small,
+        hline by calc(-1 * (100% - 30px)),
+        curve by -8px -6px with -6px 0px / -8px -2px
+      );
+    }
+
+    & .email-signup__input {
+      padding-block: 0;
+      color: var(--cat-color);
+      background-color: transparent;
+      transition: color var(--animation-values);
+
+      &::placeholder {
+        color: var(--cat-color);
+      }
+
+      /* keep browser autofill from painting its own background and text color */
+      &:-webkit-autofill {
+        -webkit-text-fill-color: var(--cat-color);
+        transition: background-color 9999s ease-in-out 0s;
+      }
     }
   }
 
@@ -484,6 +560,10 @@
         {
           "value": "none",
           "label": "t:options.none"
+        },
+        {
+          "value": "cat",
+          "label": "Cat"
         }
       ],
       "default": "all"
@@ -497,7 +577,7 @@
       "step": 0.5,
       "unit": "px",
       "default": 1,
-      "visible_if": "{{ block.settings.border_style != \"none\" }}"
+      "visible_if": "{{ block.settings.border_style != \"none\" and block.settings.border_style != \"cat\" }}"
     },
     {
       "type": "range",
@@ -508,7 +588,7 @@
       "step": 1,
       "unit": "px",
       "default": 100,
-      "visible_if": "{{ block.settings.border_style != \"underline\" }}"
+      "visible_if": "{{ block.settings.border_style != \"underline\" and block.settings.border_style != \"cat\" }}"
     },
     {
       "type": "select",
@@ -603,7 +683,7 @@
       "id": "integrated_button",
       "label": "t:settings.integrated_button",
       "default": false,
-      "visible_if": "{{ block.settings.border_style != \"underline\" }}"
+      "visible_if": "{{ block.settings.border_style != \"underline\" and block.settings.border_style != \"cat\" }}"
     },
     {
       "type": "select",
