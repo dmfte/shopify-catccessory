@@ -1,0 +1,60 @@
+{% style %}
+  .cat-input-1 {
+    position: relative;
+    display: flex;
+    padding-left: 35px;
+
+    & span {
+      position: absolute;
+      inset: 0;
+      background-color: var(--color-primary-button-background);
+      min-height: 250px;
+      clip-path: shape(
+        from 25px 13px,
+        curve to 18px 5px with 24px 8px / 24px 6px,
+        line to 18px 5px,
+        line to 16px 2px,
+        line to 14px 6px,
+        curve to 9px 17px with 9px 8px / 10px 11px,
+        curve to 4px 37px with 6px 22px / 2px 24px,
+        curve to 11px 49px with 1px 39px / 2px 49px,
+        hline to 23px,
+        curve to 26px 34px with 30px 49px / 33px 35px,
+        curve to 22px 21px with 26px 29px / 25px 25px,
+        curve to 27px 14px with 26px 19px / 27px 17px,
+        line to 25px 13px,
+        move to 22px 6px,
+        line to 21px 3px,
+        line to 18px 5px,
+        move to 16px 46px,
+        curve to 28px 52px with 18px 50px / 21px 52px,
+        hline by calc(100% - 30px),
+        arc by 0px -4px of 1px ccw small,
+        hline by calc(-1 * (100% - 30px)),
+        curve by -8px -6px with -6px 0px / -8px -2px
+      );
+    }
+
+    & input {
+      width: 100%;
+      margin-top: 14px;
+      border: none;
+    }
+  }
+{% endstyle %}
+
+<div class="cat-input-1">
+  <span></span>
+  <input type="text" value="Your text here">
+</div>
+
+{% schema %}
+{
+  "name": "Cat Input 1",
+  "presets": [
+    {
+      "name": "Cat Input 1"
+    }
+  ]
+}
+{% endschema %}
