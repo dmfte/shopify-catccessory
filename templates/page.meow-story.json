@@ -718,7 +718,7 @@
                           "blocks": {}
                         },
                         "spark_button": {
-                          "type": "blk_button-cat",
+                          "type": "blk_button-cat-1",
                           "name": "Cat button",
                           "settings": {
                             "label": "EXPLORE OUR PRODUCTS",

@@ -9,10 +9,17 @@
 {% style %}
   #shopify-block-{{ block.id }} {
     {% render 'blk-scheme-vars', scheme: cat_scheme %}
-    --cat-path-filled-rest: from 11px 15px, curve by 2px 0px with 1px 3px, close, move to 12px 13px, arc by -2px 0px of 1px ccw, arc by 2px 0px of 1px ccw, move to 19px 13px, arc by 2px 0px of 1px ccw, arc by -2px 0px of 1px ccw, move to 16px 16px, line to 19px 16px, move to 16px 18px, line to 19px 19px, move to 26px 11px, curve by -3px -7px with 0px -3px / -1px -5px, line by -3px 3px, curve by -5px 0px with -2px 0px / -3px 0px, line by -3px -3px, curve by -6px 13px with -3px 4px / -6px 9px, curve by 4px 10px with 0px 4px / 2px 8px, hline to 18px, hline to 10px, curve by -7px 2px with -6px 0px / -7px 0px, curve by 4px 2px with 0px 2px / 1px 2px, hline to 18px, hline to 7px, curve by -3px 2px with -1px 0px / -3px 0px, curve by 3px 3px with 0px 3px / 2px 3px, hline by calc({{ block.settings.width }} - 30px), curve by 8px -3px with 4px 0px / 6px -1px, curve by 2px -8px with 2px -2px / 3px -5px, curve by 3px -12px with 3px -4px / 4px -7px, curve by -9px -9px with -2px -5px / -3px -6px, curve by -7px 0px with -3px -1px / -5px -2px, curve by 3px 5px with -2px 4px / 3px 5px, curve by 8px 3px with 5px 1px / 5px 1px, curve by 1px 6px with 2px 2px / 2px 5px, curve by -3px -5px with 0px -2px / -2px -4px, curve by -9px -2px with -2px -2px / -5px -2px, close, move by -19px 3px, line by -3px -1px, move by 2px 3px, line by -2px 0px;
-    --cat-path-filled-waggle: from 11px 15px, curve by 2px 0px with 1px 3px, close, move to 12px 13px, arc by -2px 0px of 1px ccw, arc by 2px 0px of 1px ccw, move to 19px 13px, arc by 2px 0px of 1px ccw, arc by -2px 0px of 1px ccw, move to 16px 16px, line to 19px 16px, move to 16px 18px, line to 19px 19px, move to 26px 11px, curve by -3px -7px with 0px -3px / -1px -5px, line by -3px 3px, curve by -5px 0px with -2px 0px / -3px 0px, line by -3px -3px, curve by -6px 13px with -3px 4px / -6px 9px, curve by 4px 10px with 0px 4px / 2px 8px, hline to 18px, hline to 10px, curve by -7px 2px with -6px 0px / -7px 0px, curve by 4px 2px with 0px 2px / 1px 2px, hline to 18px, hline to 7px, curve by -3px 2px with -1px 0px / -3px 0px, curve by 3px 3px with 0px 3px / 2px 3px, hline by calc({{ block.settings.width }} - 30px), curve by 8px -3px with 4px 0px / 6px -1px, curve by 2px -8px with 2px -2px / 3px -5px, /* Tail movement begins here */ curve by 7px -7px with 1px -2px / 5px -5px, curve by 5px -10px with 3px -3px / 4px -6px, curve by -2px -4px with 1px -2px / 0px -4px, curve by -3px 5px with -3px 0px / -2px 2px, curve by -3px 5px with -1px 2px / -1px 3px, curve by -5px 4px with -3px 3px / -4px 3px, curve by -3px -5px with 0px -2px / -2px -4px, curve by -9px -2px with -2px -2px / -5px -2px, close, move by -19px 3px, line by -3px -1px, move by 2px 3px, line by -2px 0px;
+    --cat-path-filled-rest: from 34px 12px, curve to 13px 58px with 10px 12px / 3px 35px, line to 18px 53px, curve to 29px 53px with 22px 55px / 25px 55px, line to 34px 58px, curve to 38px 47px with 37px 55px / 38px 51px, hline to calc({{ block.settings.width }} - 26px), curve by 14px -13px with 6px 0px / 14px -4px, curve by 2px -20px with 7px -5px / 10px -14px, curve by 0px -6px with -2px -2px / -4px -6px, curve by 0px -4px with 3px 0px / 3px -4px, curve by -4px 11px with -5px 1px / -9px 4px, curve by 2px 14px with 5px 7px / 5px 10px, curve by -14px -13px with 0px -9px / -7px -16px, curve by 3px -6px with 5px -3px / 5px -3px, curve by -3px -5px with -2px -4px / -2px -3px, curve by -4px -1px with 3px -5px / -4px -5px, curve by 2px 8px with 0px 2px / 1px 5px, curve by -4px 12px with -8px 2px / -8px 5px, curve by 2px -12px with -4px -6px / -5px -9px, hline to 42px, line to 45px 15px, line to 42px 12px, curve to 43px 11px with 40px 10px / 40px 9px, curve to 43px 5px with 46px 13px / 49px 7px, curve to 40px 18px with 35px 3px / 31px 8px, curve to 36px 12px with 39px 17px / 38px 16px, hline to 34px, move to 17px 18px, curve to 10px 13px with 14px 16px / 12px 15px, curve to 14px 9px with 3px 7px / 13px 4px, curve to 23px 14px with 16px 11px / 21px 13px, move to calc({{ block.settings.width }} - 41px) 12px, curve by -6px -1px with -4px 0px / -4px 0px, curve by 4px -4px with -7px -6px / 5px -9px, curve by 12px 5px with 5px 3px / 7px 3px, hline by -8px;
+    --cat-path-filled-waggle: from 34px 12px, curve to 13px 58px with 10px 12px / 3px 35px, line to 18px 53px, curve to 29px 53px with 22px 55px / 25px 55px, line to 34px 58px, curve to 38px 47px with 37px 55px / 38px 51px, hline to calc({{ block.settings.width }} - 26px), curve by 14px -13px with 6px 0px / 14px -4px, curve by 2px -20px with 7px -5px / 10px -14px, curve by 0px -6px with -2px -2px / -4px -6px, curve by 0px -4px with 3px 0px / 3px -4px, curve by -4px 11px with -5px 1px / -9px 4px, curve by 2px 14px with 5px 7px / 5px 10px, curve by -10px -17px with 0px -9px / -7px -17px, curve by -1px -5px with 1px -2px / 1px -4px, curve by -8px -4px with -4px -2px / -7px -3px, curve by -5px 0px with 0px -2px / -5px -3px, curve by 9px 7px with 0px 2px / 4px 5px, curve by -5px 14px with -9px 4px / -9px 7px, curve by 1px -12px with -4px -7px / -2px -10px, hline to 42px, line to 45px 15px, line to 42px 12px, curve to 44px 8px with 40px 9px / 43px 8px, curve to 42px 3px with 49px 7px / 47px 1px, curve to 40px 18px with 36px 5px / 31px 8px, curve to 36px 12px with 39px 17px / 38px 16px, hline to 34px, move to 18px 17px, curve to 11px 9px with 15px 15px / 13px 13px, curve to 16px 7px with 9px 4px / 14px 3px, curve to 24px 14px with 17px 10px / 21px 13px, move to calc({{ block.settings.width }} - 40px) 12px, curve by -3px -3px with -2px -2px / -3px -3px, curve by 4px -4px with -5px -5px / 3px -9px, curve by 8px 7px with 2px 3px / 5px 5px, hline by -9px;
     width: {{ block.settings.width }};
     padding: {{ block.settings.padding_top }}px {{ block.settings.padding_right }}px {{ block.settings.padding_bottom }}px {{ block.settings.padding_left }}px;
+  }
+  {% comment %}Scoped to this block: .cat-btn is shared with blk_button-cat-1 (40px tall){% endcomment %}
+  #shopify-block-{{ block.id }} .cat-btn {
+    height: 60px;
+  }
+  #shopify-block-{{ block.id }} .cat-shape {
+    padding-top: 0;
   }
   @media screen and (max-width: 749px) {
     #shopify-block-{{ block.id }} {
@@ -94,7 +101,7 @@
 
 {% schema %}
 {
-  "name": "Cat button",
+  "name": "Cat button 2",
   "settings": [
     {
       "type": "header",
@@ -277,7 +284,7 @@
   ],
   "presets": [
     {
-      "name": "Cat button",
+      "name": "Cat button 2",
       "category": "Custom blocks"
     }
   ]

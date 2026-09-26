@@ -355,7 +355,7 @@
                           },
                           "blocks": {
                             "blk_button_cat_qUczfz": {
-                              "type": "blk_button-cat",
+                              "type": "blk_button-cat-1",
                               "name": "Cat button",
                               "settings": {
                                 "label": "SHOP NOW",
@@ -377,16 +377,16 @@
                               },
                               "blocks": {}
                             },
-                            "blk_button_cat_XYGhnY": {
-                              "type": "blk_button-cat",
-                              "name": "Cat button",
+                            "blk_button_cat_2_RnN6Lx": {
+                              "type": "blk_button-cat-2",
+                              "name": "Cat button 2",
                               "settings": {
                                 "label": "LEARN MORE",
                                 "link": "",
                                 "open_in_new_tab": false,
                                 "width": "200px",
                                 "alignment": "center",
-                                "style": "secondary",
+                                "style": "primary",
                                 "font_size": 12,
                                 "animate_tail": true,
                                 "padding_top": 0,
@@ -403,7 +403,7 @@
                           },
                           "block_order": [
                             "blk_button_cat_qUczfz",
-                            "blk_button_cat_XYGhnY"
+                            "blk_button_cat_2_RnN6Lx"
                           ]
                         }
                       },
@@ -1191,7 +1191,7 @@
                           "blocks": {}
                         },
                         "blk_button_cat_Ehe7Qy": {
-                          "type": "blk_button-cat",
+                          "type": "blk_button-cat-1",
                           "name": "Cat button",
                           "settings": {
                             "label": "DISCOVER OUR STORY",
@@ -1627,7 +1627,7 @@
                           "blocks": {}
                         },
                         "blk_button_cat_Gh2Owl": {
-                          "type": "blk_button-cat",
+                          "type": "blk_button-cat-1",
                           "name": "Cat button",
                           "settings": {
                             "label": "SHOP RISK-FREE",
@@ -2214,7 +2214,7 @@
                           "blocks": {}
                         },
                         "blk_button_cat_MsFBtn": {
-                          "type": "blk_button-cat",
+                          "type": "blk_button-cat-1",
                           "name": "Cat button",
                           "settings": {
                             "label": "READ OUR STORY",

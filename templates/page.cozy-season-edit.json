@@ -271,7 +271,7 @@
                       },
                       "blocks": {
                         "cozy_hero_btn_shop": {
-                          "type": "blk_button-cat",
+                          "type": "blk_button-cat-1",
                           "name": "Cat button",
                           "settings": {
                             "label": "SHOP THE EDIT",
@@ -294,7 +294,7 @@
                           "blocks": {}
                         },
                         "cozy_hero_btn_story": {
-                          "type": "blk_button-cat",
+                          "type": "blk_button-cat-1",
                           "name": "Cat button",
                           "settings": {
                             "label": "READ OUR STORY",
@@ -869,7 +869,7 @@
                       "blocks": {}
                     },
                     "cozy_pair_button": {
-                      "type": "blk_button-cat",
+                      "type": "blk_button-cat-1",
                       "name": "Cat button",
                       "settings": {
                         "label": "SHOP COZY PICKS",

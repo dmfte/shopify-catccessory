@@ -154,7 +154,7 @@
               },
               "blocks": {
                 "chip_psychology": {
-                  "type": "blk_button-cat",
+                  "type": "blk_button-cat-1",
                   "settings": {
                     "label": "Feline Psychology",
                     "link": "#shopify-section-cat-feline-psychology",
@@ -176,7 +176,7 @@
                   "blocks": {}
                 },
                 "chip_grooming": {
-                  "type": "blk_button-cat",
+                  "type": "blk_button-cat-1",
                   "settings": {
                     "label": "Cat Care & Grooming",
                     "link": "#shopify-section-cat-grooming-care",
@@ -198,7 +198,7 @@
                   "blocks": {}
                 },
                 "chip_wellness": {
-                  "type": "blk_button-cat",
+                  "type": "blk_button-cat-1",
                   "settings": {
                     "label": "Feline Wellness",
                     "link": "#shopify-section-cat-feline-wellness",
@@ -220,7 +220,7 @@
                   "blocks": {}
                 },
                 "chip_curiosities": {
-                  "type": "blk_button-cat",
+                  "type": "blk_button-cat-1",
                   "settings": {
                     "label": "Feline Curiosities",
                     "link": "#shopify-section-cat-feline-curiosities",
